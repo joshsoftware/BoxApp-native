@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import {Button} from 'galio-framework';
 import SignUpPage from './SignUpPage';
 import SignInPage from './SignInPage';
@@ -43,11 +43,15 @@ const IntroPage = (props) => {
 
       </View>
       
-      </View> 
+    </View> 
   );
 };
 
 const styles = StyleSheet.create({
+
+  body:{
+    backgroundColor: "#041530",
+  },
 
   header:{
     flex:1,
@@ -59,6 +63,8 @@ const styles = StyleSheet.create({
 
   heading: {
     fontSize: 30,
+    color: "white",
+    fontSize: 50,
     // borderWidth: 1, 
     // borderColor: 'black',
   },

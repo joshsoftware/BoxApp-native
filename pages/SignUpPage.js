@@ -1,112 +1,122 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Picker } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Picker, ScrollView } from 'react-native';
 import {Button, Input, Text, Block, theme } from 'galio-framework';
+import {CustomInputText, CustomInputNumber, CustomInputPassword} from '../components/CustomInput';
 
 const SignUpPage = (props) => {
 
   const {navigation} = props;
+  const [datasource, setDataSource] = useState([]);
+  const [pickerValue, setPickerValue] = useState("Pune");
 
   //Initializing user fields
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [contactNumber, setContactNumber] = useState('');
-  const [emailId, setEmailId] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [ user, setUser] = useState({})
-  
-  const handleInput = (e) => {
-    const { name, value} = e.target;
+
+  const handleInput = (value, name) => {
+    console.log(value)
     setUser({ ...user, [name]: value})
-
+    console.log(user)
   }
 
-  //Methods to validate the input field provided by the user
-  const firstNameHandler = inputFirstName => {
-    setFirstName(inputFirstName.replace(/[^a-zA-Z]/g,''));
+  const addUser = () => {
+    console.log("In add user method")
+    fetch("http://192.168.1.84:3000/api/v1/users",
+    {
+      method: 'POST',
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        user: {
+          first_name: user.firstName,
+          last_name: user.lastName,
+          contact_number: user.contactNumber,
+          email: user.emailId,
+          password: user.password,
+          city_id: user.cityId
+        }      
+      })
+    }).then((result) => {
+      if(result.status === 200){
+        console.log("User created");
+        console.log(result);
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
-  const lastNameHandler = inputLastName => {
-    setLastName(inputLastName.replace(/[^a-zA-Z]/g,''));
-  }
-
-  const contactNumberHandler = inputContactNumber => {
-    setContactNumber(inputContactNumber.replace(/[^0-9]/g,''));
-  };
-
-  const emailIdHandler = inputEmailId => {
-    setEmailId();
-  }
-
-  const passwordHandler = inputPassword => {
-    setPassword();
-  };
-
-  const confirmPasswordHandler = inputContactNumber => {
-    setConfirmPassword();
-  };
-
-  return(
+  useEffect(()=>{
+    fetch("http://192.168.1.82:3000/api/v1/cities")
+    .then((response) => response.json())
+    .then((responseJson) => {
+      setDataSource(responseJson)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }) 
+  
+  return( 
     <View style={styles.bodyContainer}>
       
       <Text h4 style={styles.registerLabel}>Register here!</Text>
 
-      <Input 
+      <CustomInputText 
         placeholder="First Name" 
-        style={{ borderColor: theme.COLORS.THEME }} 
-        value={firstName}
-        onChangeText={firstNameHandler}
-        color="black" rounded
-      />
+        name="firstName" 
+        defaultValue={user.firstName}
+        handleInputChange={handleInput}
+      /> 
 
-      <Input 
+      <CustomInputText 
         placeholder="Last Name" 
-        style={{ borderColor: theme.COLORS.THEME }} 
-        value={lastName}
-        onChangeText={lastNameHandler}
-        color="black" rounded
-      />
+        name="lastName" 
+        defaultValue={user.lastName}
+        handleInputChange={handleInput}
+      /> 
 
-      <Input 
+      <CustomInputNumber 
         placeholder="Contact Number" 
-        keyboardType="number-pad"
-        maxLength={10}
-        value={contactNumber}
-        onChangeText={contactNumberHandler}
-        style={{ borderColor: theme.COLORS.INFO }} 
-        color="black" rounded 
+        name="contactNumber"
+        defaultValue={user.contactNumber}
+        handleInputChange={handleInput}
       />
       
-      <Input 
+      <CustomInputText 
         placeholder="Email ID" 
-        value={emailId}
-        onChangeText={emailIdHandler}
-        style={{ borderColor: theme.COLORS.INFO }} 
-        color="black" rounded 
-      />
+        name="emailId" 
+        defaultValue={user.emailId}
+        handleInputChange={handleInput}
+      /> 
 
-      <Input 
+      <CustomInputPassword 
         placeholder="Password" 
-        secureTextEntry = {true}
-        value={password}
-        onChangeText={passwordHandler}
-        style={{ borderColor: theme.COLORS.INFO }} 
-        color="black" rounded 
+        name="password"
+        defaultValue={user.password}
+        handleInputChange={handleInput}
       />
 
-      <Input 
+      <CustomInputPassword 
         placeholder="Confirm Password" 
-        secureTextEntry = {true}
-        value={confirmPassword}
-        onChangeText={confirmPasswordHandler}
-        style={{ borderColor: theme.COLORS.INFO }} 
-        color="black" rounded 
+        name="confirmPassword"
+        defaultValue={user.confirmPassword}
+        handleInputChange={handleInput}
       />
 
-      <Picker style={styles.pickCity}>
-        <Picker.Item label="Select location"/>
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
+      <Picker
+        selectedValue={pickerValue}
+        style={styles.cityDropDown}
+        onValueChange={(item, key) => {
+          console.log(item)
+          setPickerValue(item);
+          handleInput(item,"cityId");
+        }}
+      >
+        { 
+          datasource.map((item, key)=>(
+          <Picker.Item label={item.name} value={item.id} key={key} />))
+        }
       </Picker>
 
       <Button 
@@ -114,6 +124,7 @@ const SignUpPage = (props) => {
         size="small" 
         shadowColor="black" 
         round
+        onPress={addUser}
         style={styles.submitButton}>    Submit
       </Button>
 
@@ -135,14 +146,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: "10%",
-    // borderColor: 'black',
-    // borderWidth: 1,
     justifyContent: 'center',
-    backgroundColor: '#cff089',
+    backgroundColor: '#041530',
   },
 
   registerLabel: {
     padding: "10%",
+    color: "white",
   },
 
   pickCity: {
@@ -154,6 +164,14 @@ const styles = StyleSheet.create({
 
   submitButton: {
     margin: 10,
+  },
+
+  cityDropDown: {
+    margin: 10,
+    width: "90%", 
+    height: 40, 
+    backgroundColor: "white", 
+    color: "black",
   },
 });
 

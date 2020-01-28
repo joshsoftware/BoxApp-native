@@ -1,37 +1,67 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import {Button, Input, Text, Block, theme } from 'galio-framework';
+import { CustomInputText, CustomInputPassword } from '../components/CustomInput';
 
 const SignInPage = (props) => {
 
   const {navigation} = props;
 
-  const [emailId, setEmailId] = useState('');
-  const [password, setPassword] = useState('');
+  // const [emailId, setEmailId] = useState('');
+  // const [password, setPassword] = useState('');
+
+  const signIn = () => {
+    console.log("In signIn method")
+    fetch("http://192.168.1.84:3000/api/v1/auth/login",
+    {
+      method: 'POST',
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        user: {
+          email: user.emailId,
+          password: user.password
+        }      
+      })
+    }).then((result) => {
+      if(result.status === 200){
+        console.log("Signed in successfully");
+        console.log(result);
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const [ user, setUser] = useState({})
+  const handleInput = (value, name) => {
+    console.log(value);
+    setUser({ ...user, [name]: value})
+    console.log(user);
+  }
 
   return(
     <View style={styles.bodyContainer}>
       
       <Text h4 style={styles.signInLabel}>Sign In!</Text>
       
-      <Input 
+      <CustomInputText 
         placeholder="Email ID" 
-        value={emailId}
-        onChangeText={ e => setEmailId(e.target.value) }
-        style={{ borderColor: theme.COLORS.INFO }} 
-        color="black" rounded 
-      />
+        name="emailId" 
+        defaultValue={user.emailId}
+        handleInputChange={handleInput}
+      /> 
 
-      <Input 
+      <CustomInputPassword 
         placeholder="Password" 
-        secureTextEntry = {true}
-        value={password}
-        onChangeText={ e => setPassword(e.target.value) }
-        style={{ borderColor: theme.COLORS.INFO }} 
-        color="black" rounded 
+        name="password"
+        defaultValue={user.password}
+        handleInputChange={handleInput}
       />
 
       <Button 
+        onPress={signIn}
         color="info" 
         size="small" 
         shadowColor="black" 
@@ -57,14 +87,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: "10%",
-    // borderColor: 'black',
-    // borderWidth: 1,
     justifyContent: 'center',
-    backgroundColor: '#cff089',
+    backgroundColor: '#041530'
   },
 
   signInLabel: {
     padding: "10%",
+    color: "white",
   },
 
   buttonsContainer:{
