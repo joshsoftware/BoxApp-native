@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import {Button, Input, Text, Block, theme } from 'galio-framework';
 import { CustomInputText, CustomInputPassword } from '../components/CustomInput';
+import YourOpponentsPage from '../pages/YourOpponentsPage';
+import AsyncStorage from '@react-native-community/async-storage';
 
+
+//Component to manage the Sign in page
 const SignInPage = (props) => {
 
   const {navigation} = props;
 
-  // const [emailId, setEmailId] = useState('');
-  // const [password, setPassword] = useState('');
-
+  //Method to be called when Sign in button is pressed
   const signIn = () => {
     console.log("In signIn method")
     fetch("http://192.168.1.84:3000/api/v1/auth/login",
@@ -24,16 +26,35 @@ const SignInPage = (props) => {
           password: user.password
         }      
       })
-    }).then((result) => {
-      if(result.status === 200){
-        console.log("Signed in successfully");
-        console.log(result);
-      }
-    }).catch((err) => {
-      console.log(err);
     })
+    .then((response) =>  response.json())
+    .then((responseJson) => {
+      setToken(responseJson)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
+  const setToken = async(tokenObject) => {
+    try {
+      await AsyncStorage.setItem('tokenObject', JSON.stringify(tokenObject))
+    } 
+    catch (e) { 
+      console.log(e)  
+    }
+  }
+
+  const getToken = async() => {
+    try{
+      const tokenObject = await AsyncStorage.getItem('tokenObject')
+      const tokenParsed = JSON.parse(tokenObject);
+    }
+    catch(e){
+      console.log(e);
+    }
+  }
+  
   const [ user, setUser] = useState({})
   const handleInput = (value, name) => {
     console.log(value);
@@ -77,7 +98,7 @@ const SignInPage = (props) => {
         onPress={() => navigation.navigate('Intro')}
         style={styles.submitButton}>    Cancel
       </Button>
-
+      
     </View>
   )
 }
@@ -94,11 +115,6 @@ const styles = StyleSheet.create({
   signInLabel: {
     padding: "10%",
     color: "white",
-  },
-
-  buttonsContainer:{
-    // borderWidth: 1,
-    // borderColor: 'black',
   },
 
   submitButton: {
