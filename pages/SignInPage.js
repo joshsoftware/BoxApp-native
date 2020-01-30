@@ -1,15 +1,31 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import {Button, Input, Text, Block, theme } from 'galio-framework';
+import {Button, Input, Text, Toast, theme } from 'galio-framework';
 import { CustomInputText, CustomInputPassword } from '../components/CustomInput';
 import YourOpponentsPage from '../pages/YourOpponentsPage';
-import AsyncStorage from '@react-native-community/async-storage';
+import { validator } from '../components/Validation';
 
 
 //Component to manage the Sign in page
 const SignInPage = (props) => {
 
   const {navigation} = props;
+  const [isShowToast, setShowToast] = useState(false);
+  const [variableInToast, setVariableInToast] = useState("");
+
+  const [ user, setUser] = useState({})
+  const handleInput = (value, name) => {
+
+    if(validator(name, value)){
+      setShowToast(false)
+      setUser({ ...user, [name]: value})
+      console.log(user)
+    }
+    else{
+      setShowToast(true)
+      setVariableInToast(name)
+    }
+  }
 
   //Method to be called when Sign in button is pressed
   const signIn = () => {
@@ -54,19 +70,22 @@ const SignInPage = (props) => {
       console.log(e);
     }
   }
-  
-  const [ user, setUser] = useState({})
-  const handleInput = (value, name) => {
-    console.log(value);
-    setUser({ ...user, [name]: value})
-    console.log(user);
-  }
 
   return(
     <View style={styles.bodyContainer}>
       
       <Text h4 style={styles.signInLabel}>Sign In!</Text>
       
+      <Toast 
+        isShow={isShowToast} 
+        color="red"
+        style={{margin: 40}}
+      >
+        <Text style={{color:"white"}}>
+          Please enter a valid {variableInToast}.
+        </Text>
+      </Toast>
+
       <CustomInputText 
         placeholder="Email ID" 
         name="emailId" 

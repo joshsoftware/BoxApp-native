@@ -29,7 +29,7 @@ const CustomInputNumber = (props) => {
       keyboardType="number-pad"
       maxLength={10}
       onChangeText={(text) => {handleInputChange(text, name)}}
-      style={{ borderColor: theme.COLORS.INFO }} 
+      style={{ borderColor: theme.COLORS.THEME }} 
       color="black" rounded 
     />
   );
@@ -46,7 +46,7 @@ const CustomInputPassword = (props) => {
       name={name}
       defaultValue={defaultValue}
       onChangeText={(text) => {handleInputChange(text, name)}}
-      style={{ borderColor: theme.COLORS.INFO }} 
+      style={{ borderColor: theme.COLORS.THEME }} 
       color="black" rounded 
     />
   );

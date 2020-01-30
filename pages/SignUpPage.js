@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Picker, ScrollView } from 'react-native';
-import {Button, Input, Text, Block, theme } from 'galio-framework';
+import { StyleSheet, View, Picker, ScrollView, Alert } from 'react-native';
+import {Button, Input, Text, Toast, theme } from 'galio-framework';
 import {CustomInputText, CustomInputNumber, CustomInputPassword} from '../components/CustomInput';
+import { validator, validateName, validateNumber, validateEmailId } from '../components/Validation';
 
 const SignUpPage = (props) => {
 
   const {navigation} = props;
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState("Pune");
+  const [isShowToast, setShowToast] = useState(false);
+  const [variableInToast, setVariableInToast] = useState("");
 
   //Initializing user fields
   const [ user, setUser] = useState({})
 
   const handleInput = (value, name) => {
-    console.log(value)
-    setUser({ ...user, [name]: value})
-    console.log(user)
+
+    if(validator(name, value)){
+      setShowToast(false)
+      setUser({ ...user, [name]: value})
+      console.log(user)
+    }
+    else{
+      setShowToast(true)
+      setVariableInToast(name)
+    }
   }
 
   const addUser = () => {
     console.log("In add user method")
+
     fetch("http://192.168.1.84:3000/api/v1/users",
     {
       method: 'POST',
@@ -32,7 +43,6 @@ const SignUpPage = (props) => {
           last_name: user.lastName,
           contact_number: user.contactNumber,
           email: user.emailId,
-          password: user.password,
           city_id: user.cityId
         }      
       })
@@ -46,9 +56,13 @@ const SignUpPage = (props) => {
     })
   }
 
+  const showAlertForEmailVerification = () => {
+    Alert.alert("An email verification link has been sent to you. Please verify yourself.")
+  } 
+
   useEffect(()=>{
-    fetch("http://192.168.1.82:3000/api/v1/cities")
-    .then((response) => response.json())
+    fetch("http://192.168.1.69:3000/api/v1/cities")
+    .then((response) =>  response.json())
     .then((responseJson) => {
       setDataSource(responseJson)
     })
@@ -61,6 +75,16 @@ const SignUpPage = (props) => {
     <View style={styles.bodyContainer}>
       
       <Text h4 style={styles.registerLabel}>Register here!</Text>
+
+      <Toast 
+        isShow={isShowToast} 
+        color="red"
+        style={{margin: 40}}
+      >
+        <Text style={{color:"white"}}>
+          Please enter a valid {variableInToast}.
+        </Text>
+      </Toast>
 
       <CustomInputText 
         placeholder="First Name" 
@@ -90,20 +114,6 @@ const SignUpPage = (props) => {
         handleInputChange={handleInput}
       /> 
 
-      <CustomInputPassword 
-        placeholder="Password" 
-        name="password"
-        defaultValue={user.password}
-        handleInputChange={handleInput}
-      />
-
-      <CustomInputPassword 
-        placeholder="Confirm Password" 
-        name="confirmPassword"
-        defaultValue={user.confirmPassword}
-        handleInputChange={handleInput}
-      />
-
       <Picker
         selectedValue={pickerValue}
         style={styles.cityDropDown}
@@ -124,8 +134,12 @@ const SignUpPage = (props) => {
         size="small" 
         shadowColor="black" 
         round
-        onPress={addUser}
-        style={styles.submitButton}>    Submit
+        onPress={ () => {
+            addUser()
+            showAlertForEmailVerification()
+          }
+        }
+        style={styles.submitButton}>    Register
       </Button>
 
       <Button 
@@ -135,6 +149,15 @@ const SignUpPage = (props) => {
         round
         onPress={() => navigation.navigate('Intro')}
         style={styles.submitButton}>    Cancel
+      </Button>
+
+      <Button 
+        color="error" 
+        size="small" 
+        shadowColor="black" 
+        round
+        onPress={() => navigation.navigate('SetPassword')}
+        style={styles.submitButton}>    Set Password Page
       </Button>
 
     </View>
