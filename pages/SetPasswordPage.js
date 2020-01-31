@@ -1,38 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import {Button, Text, Toast, theme } from 'galio-framework';
 import { CustomInputPassword } from '../components/CustomInput';
-import { validator } from '../components/Validation';
+import { validateSetPassword, showAlertForInvalidInput } from '../components/Validation';
 
 const SetPasswordPage = (props) => {
 
   const {navigation} = props;
   const [ user, setUser] = useState({});
-  const [isShowToast, setShowToast] = useState(false);
-  const [variableInToast, setVariableInToast] = useState("");
+  const [ errors, setErrors] = useState({});
 
   const handleInput = (value, name) => {
-
-    if(name==="confirmPassword")
-    {
-      if(user.password===value)
-        setUser({ ...user, [name]: value})
-      else{
-        setShowToast(true)
-        setVariableInToast("Passwords are not matching.")
-      }
-      return
-    }
-
-    if(validator(name, value)){
-      setShowToast(false)
       setUser({ ...user, [name]: value})
       console.log(user)
-    }
-    else{
-      setShowToast(true)
-      setVariableInToast(name)
-    }
   }
 
   const setPasswordForUser = () => {
@@ -60,26 +40,27 @@ const SetPasswordPage = (props) => {
     })
   }
 
+  const noErrorsPresent = (validationErrors) => {
+
+    if(validationErrors.password !== "" ||
+      validationErrors.confirmPassword !== "")
+    return false
+
+    else
+      return true
+  }
+
   return(
     <View style={styles.bodyContainer}>
       
       <Text h4 style={styles.registerLabel}>Set password here..</Text>
-
-      <Toast 
-        isShow={isShowToast} 
-        color="red"
-        style={{margin: 40}}
-      >
-        <Text style={{color:"white"}}>
-          Please enter a valid {variableInToast}.
-        </Text>
-      </Toast>
 
       <CustomInputPassword 
         placeholder="Password" 
         name="password"
         defaultValue={user.password}
         handleInputChange={handleInput}
+        borderStyle={ errors.password ? styles.error : styles.textInputBorder }
       />
 
       <CustomInputPassword 
@@ -87,6 +68,7 @@ const SetPasswordPage = (props) => {
         name="confirmPassword"
         defaultValue={user.confirmPassword}
         handleInputChange={handleInput}
+        borderStyle={ errors.confirmPassword ? styles.error : styles.textInputBorder }
       />
 
       <Button 
@@ -94,7 +76,19 @@ const SetPasswordPage = (props) => {
         size="small" 
         shadowColor="black" 
         round
-        onPress={setPasswordForUser}
+        onPress={ () => {
+            setErrors(validateSetPassword(user));
+            const validationErrors = validateSetPassword(user);
+            console.log(validationErrors);  
+
+            if(noErrorsPresent(validationErrors)){
+              // setPasswordForUser()
+            }
+            else{
+              showAlertForInvalidInput(user, validationErrors)
+            }
+          }
+        }
         style={styles.submitButton}>    Confirm
       </Button>
 
@@ -129,6 +123,15 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 
+  error: {
+    borderColor: "red",
+    borderWidth: 2,
+  },
+
+  textInputBorder: {
+    borderColor: "yellow",
+    borderWidth: 1,
+  }
 })
 
 export default SetPasswordPage;

@@ -1,30 +1,22 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import {Button, Input, Text, Toast, theme } from 'galio-framework';
 import { CustomInputText, CustomInputPassword } from '../components/CustomInput';
 import YourOpponentsPage from '../pages/YourOpponentsPage';
-import { validator } from '../components/Validation';
+import { validateSignIn, showAlertForInvalidInput } from '../components/Validation';
 
 
 //Component to manage the Sign in page
 const SignInPage = (props) => {
 
   const {navigation} = props;
-  const [isShowToast, setShowToast] = useState(false);
-  const [variableInToast, setVariableInToast] = useState("");
 
   const [ user, setUser] = useState({})
-  const handleInput = (value, name) => {
+  const [ errors, setErrors] = useState({})
 
-    if(validator(name, value)){
-      setShowToast(false)
+  const handleInput = (value, name) => {
       setUser({ ...user, [name]: value})
       console.log(user)
-    }
-    else{
-      setShowToast(true)
-      setVariableInToast(name)
-    }
   }
 
   //Method to be called when Sign in button is pressed
@@ -71,26 +63,27 @@ const SignInPage = (props) => {
     }
   }
 
+  const noErrorsPresent = (validationErrors) => {
+
+    if(validationErrors.emailId !== "" ||
+      validationErrors.password !== "")
+    return false
+
+    else
+      return true
+  }
+
   return(
     <View style={styles.bodyContainer}>
       
       <Text h4 style={styles.signInLabel}>Sign In!</Text>
-      
-      <Toast 
-        isShow={isShowToast} 
-        color="red"
-        style={{margin: 40}}
-      >
-        <Text style={{color:"white"}}>
-          Please enter a valid {variableInToast}.
-        </Text>
-      </Toast>
 
       <CustomInputText 
         placeholder="Email ID" 
         name="emailId" 
         defaultValue={user.emailId}
         handleInputChange={handleInput}
+        borderStyle={errors.emailId? styles.error : styles.textInputBorder}
       /> 
 
       <CustomInputPassword 
@@ -98,15 +91,30 @@ const SignInPage = (props) => {
         name="password"
         defaultValue={user.password}
         handleInputChange={handleInput}
+        borderStyle={errors.password? styles.error : styles.textInputBorder}
       />
 
       <Button 
-        onPress={signIn}
         color="info" 
         size="small" 
         shadowColor="black" 
         round
-        style={styles.submitButton}>    Sign In
+        style={styles.submitButton}
+        onPress={ () =>{
+            setErrors(validateSignIn(user))
+            const validationErrors = validateSignIn(user)
+            console.log(validationErrors)
+
+            if(noErrorsPresent(validationErrors)){
+              console.log("No errors")
+              //signIn()
+            }
+            else{
+              showAlertForInvalidInput(user, validationErrors);
+            }
+          } 
+        }  
+      >    Sign In
       </Button>
 
       <Button 
@@ -139,6 +147,16 @@ const styles = StyleSheet.create({
   submitButton: {
     margin: 10,
   },
+
+  error: {
+    borderColor: "red",
+    borderWidth: 2,
+  },
+
+  textInputBorder: {
+    borderColor: "yellow",
+    borderWidth: 1,
+  }
 });
 
 

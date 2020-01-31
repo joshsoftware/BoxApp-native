@@ -2,30 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Picker, ScrollView, Alert } from 'react-native';
 import {Button, Input, Text, Toast, theme } from 'galio-framework';
 import {CustomInputText, CustomInputNumber, CustomInputPassword} from '../components/CustomInput';
-import { validator, validateName, validateNumber, validateEmailId } from '../components/Validation';
+import { validateSignUp, showAlertForInvalidInput } from '../components/Validation';
 
 const SignUpPage = (props) => {
 
   const {navigation} = props;
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState("Pune");
-  const [isShowToast, setShowToast] = useState(false);
-  const [variableInToast, setVariableInToast] = useState("");
 
   //Initializing user fields
   const [ user, setUser] = useState({})
+  const [ errors, setErrors] = useState({})
 
   const handleInput = (value, name) => {
-
-    if(validator(name, value)){
-      setShowToast(false)
       setUser({ ...user, [name]: value})
       console.log(user)
-    }
-    else{
-      setShowToast(true)
-      setVariableInToast(name)
-    }
   }
 
   const addUser = () => {
@@ -56,6 +47,18 @@ const SignUpPage = (props) => {
     })
   }
 
+  const noErrorsPresent = (validationErrors) => {
+
+    if(validationErrors.firstName !== "" ||
+      validationErrors.lastName !== "" ||
+      validationErrors.contactNumber !== "" ||
+      validationErrors.emailId !== "")
+    return false
+
+    else
+      return true
+  }
+
   const showAlertForEmailVerification = () => {
     Alert.alert("An email verification link has been sent to you. Please verify yourself.")
   } 
@@ -76,21 +79,12 @@ const SignUpPage = (props) => {
       
       <Text h4 style={styles.registerLabel}>Register here!</Text>
 
-      <Toast 
-        isShow={isShowToast} 
-        color="red"
-        style={{margin: 40}}
-      >
-        <Text style={{color:"white"}}>
-          Please enter a valid {variableInToast}.
-        </Text>
-      </Toast>
-
       <CustomInputText 
         placeholder="First Name" 
         name="firstName" 
         defaultValue={user.firstName}
         handleInputChange={handleInput}
+        borderStyle={errors.firstName ? styles.error : styles.textInputBorder}
       /> 
 
       <CustomInputText 
@@ -98,6 +92,7 @@ const SignUpPage = (props) => {
         name="lastName" 
         defaultValue={user.lastName}
         handleInputChange={handleInput}
+        borderStyle={errors.lastName ? styles.error : styles.textInputBorder}
       /> 
 
       <CustomInputNumber 
@@ -105,6 +100,7 @@ const SignUpPage = (props) => {
         name="contactNumber"
         defaultValue={user.contactNumber}
         handleInputChange={handleInput}
+        borderStyle={errors.contactNumber ? styles.error: styles.textInputBorder}
       />
       
       <CustomInputText 
@@ -112,6 +108,7 @@ const SignUpPage = (props) => {
         name="emailId" 
         defaultValue={user.emailId}
         handleInputChange={handleInput}
+        borderStyle={errors.emailId ? styles.error : styles.textInputBorder }
       /> 
 
       <Picker
@@ -135,8 +132,18 @@ const SignUpPage = (props) => {
         shadowColor="black" 
         round
         onPress={ () => {
-            addUser()
-            showAlertForEmailVerification()
+            setErrors(validateSignUp(user))
+            const validationErrors = validateSignUp(user);
+            console.log(validationErrors)
+
+            if(noErrorsPresent(validationErrors)){
+              addUser()
+              //Show alert based on response from server after successful sign up
+              showAlertForEmailVerification()
+            }
+            else{
+              showAlertForInvalidInput(user, validationErrors)
+            }
           }
         }
         style={styles.submitButton}>    Register
@@ -196,6 +203,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white", 
     color: "black",
   },
+
+  error: {
+    borderColor: "red",
+    borderWidth: 2,
+  },
+
+  textInputBorder: {
+    borderColor: "yellow",
+    borderWidth: 1,
+  }
 });
 
 export default SignUpPage;

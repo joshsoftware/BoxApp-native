@@ -4,7 +4,7 @@ import {Input, theme} from 'galio-framework';
 
 const CustomInputText = (props) => {
 
-  const {placeholder, name, defaultValue, handleInputChange} =  props;
+  const {placeholder, name, defaultValue, handleInputChange, borderStyle} =  props;
 
   return(
     <Input 
@@ -12,7 +12,7 @@ const CustomInputText = (props) => {
       name={name}
       defaultValue={defaultValue}
       onChangeText={(text) => {handleInputChange(text, name)}}
-      style={{ borderColor: theme.COLORS.THEME }} 
+      style={borderStyle} 
       color="black" rounded
     />
   )
@@ -20,7 +20,7 @@ const CustomInputText = (props) => {
 
 const CustomInputNumber = (props) => {
 
-  const {placeholder, name, defaultValue, handleInputChange} =  props;
+  const {placeholder, name, defaultValue, handleInputChange, borderStyle} =  props;
   return(
     <Input
       placeholder={placeholder}
@@ -29,7 +29,7 @@ const CustomInputNumber = (props) => {
       keyboardType="number-pad"
       maxLength={10}
       onChangeText={(text) => {handleInputChange(text, name)}}
-      style={{ borderColor: theme.COLORS.THEME }} 
+      style={borderStyle} 
       color="black" rounded 
     />
   );
@@ -37,7 +37,7 @@ const CustomInputNumber = (props) => {
 
 const CustomInputPassword = (props) => {
 
-  const {placeholder, name, defaultValue, handleInputChange} =  props;
+  const {placeholder, name, defaultValue, handleInputChange, borderStyle} =  props;
 
   return(
     <Input 
@@ -46,7 +46,7 @@ const CustomInputPassword = (props) => {
       name={name}
       defaultValue={defaultValue}
       onChangeText={(text) => {handleInputChange(text, name)}}
-      style={{ borderColor: theme.COLORS.THEME }} 
+      style={borderStyle} 
       color="black" rounded 
     />
   );
