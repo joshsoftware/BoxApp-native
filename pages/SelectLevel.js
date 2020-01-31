@@ -6,7 +6,7 @@ import LevelPage from './LevelPage';
 const SelectLevel = (props) => {
 
   const {navigation} = props;
-
+  
   return(
     <View style={styles.bodyContainer}>
       <Button 
