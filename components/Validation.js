@@ -78,10 +78,14 @@ const validateConfirmPassword = (inputPassword, inputConfirmPassword) => {
 }
 
 const showAlertForInvalidInput = (object, errors) => {
-  let errorString=errorMessages.emptyInput, i;
+  let errorString="", i;
   let objectKeys = Object.keys(object);
 
-  if(objectKeys.length>0){
+  if(objectKeys.length<=1){
+    errorString += errorMessages.emptyInput;
+  }
+
+  else if(objectKeys.length>1){
     for (i in objectKeys){
       errorString += errors[objectKeys[i]];
     }

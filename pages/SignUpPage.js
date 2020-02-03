@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Picker, ScrollView, Alert } from 'react-native';
 import {Button, Input, Text, Toast, theme } from 'galio-framework';
-import {CustomInputText, CustomInputNumber, CustomInputPassword} from '../components/CustomInput';
+import { CustomInputText, CustomInputNumber } from '../components/CustomInput';
 import { validateSignUp, showAlertForInvalidInput } from '../components/Validation';
 
 const SignUpPage = (props) => {
 
   const {navigation} = props;
+  
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState("Pune");
 
@@ -40,7 +41,6 @@ const SignUpPage = (props) => {
     }).then((result) => {
       if(result.status === 200){
         console.log("User created");
-        console.log(result);
       }
     }).catch((err) => {
       console.log(err);
@@ -62,6 +62,21 @@ const SignUpPage = (props) => {
   const showAlertForEmailVerification = () => {
     Alert.alert("An email verification link has been sent to you. Please verify yourself.")
   } 
+  
+  const checkForSignUp = () => {
+    setErrors(validateSignUp(user))
+    const validationErrors = validateSignUp(user);
+    console.log(validationErrors)
+
+    if(noErrorsPresent(validationErrors)){
+      addUser()
+      showAlertForEmailVerification()
+    }
+
+    else{
+      showAlertForInvalidInput(user, validationErrors)
+    }
+  }
 
   useEffect(()=>{
     fetch("http://192.168.1.69:3000/api/v1/cities")
@@ -72,7 +87,7 @@ const SignUpPage = (props) => {
     .catch((error) => {
       console.error(error);
     });
-  }) 
+  },[]) 
   
   return( 
     <View style={styles.bodyContainer}>
@@ -131,21 +146,7 @@ const SignUpPage = (props) => {
         size="small" 
         shadowColor="black" 
         round
-        onPress={ () => {
-            setErrors(validateSignUp(user))
-            const validationErrors = validateSignUp(user);
-            console.log(validationErrors)
-
-            if(noErrorsPresent(validationErrors)){
-              addUser()
-              //Show alert based on response from server after successful sign up
-              showAlertForEmailVerification()
-            }
-            else{
-              showAlertForInvalidInput(user, validationErrors)
-            }
-          }
-        }
+        onPress={checkForSignUp}
         style={styles.submitButton}>    Register
       </Button>
 

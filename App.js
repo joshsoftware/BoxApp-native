@@ -1,5 +1,4 @@
 import React from 'react';
-import {  StyleSheet, View, Text} from 'react-native';
 import IntroPage from './pages/IntroPage';
 import SignUpPage from './pages/SignUpPage';
 import SetPasswordPage from './pages/SetPasswordPage';
@@ -10,11 +9,44 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 const RootStack = createStackNavigator(
   {
-    Intro: IntroPage,
-    SignUp: SignUpPage,
-    SetPassword : SetPasswordPage,
-    SignIn: SignInPage,
-    YourOpponents: YourOpponentsPage,
+    Intro: {
+      screen:  IntroPage,
+      navigationOptions: {
+        headerTitle: 'Welcome',
+      },
+      path: 'intro',
+    },
+    SignUp: {
+      screen: SignUpPage,
+      navigationOptions: {
+        headerTitle: 'Sign up',
+      },
+      path: 'signup',
+    },
+   
+    SetPassword: {
+      screen: SetPasswordPage,
+      navigationOptions: {
+        headerTitle: 'Set Password',
+      },
+      path: 'setpassword',
+    },
+
+    SignIn: {
+      screen: SignInPage,
+      navigationOptions: {
+        headerTitle: 'Sign In',
+      },
+      path: 'signin',
+    },
+    
+    YourOpponents: {
+      screen: YourOpponentsPage,
+      navigationOptions: {
+        headerTitle: 'Your Opponents',
+      },
+      path: 'youropponents',
+    },
   },
   {
     initialRouteName: 'Intro',
@@ -24,8 +56,10 @@ const RootStack = createStackNavigator(
 const AppContainer = createAppContainer(RootStack);
 
 const App = () => {
+
+  const prefix = "app://boxapp/"
   return (
-    <AppContainer />
+    <AppContainer uriPrefix={prefix} />
   );
 };
 
