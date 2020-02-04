@@ -11,8 +11,8 @@ function getDefault(){
 const ApiHelper = {
 
   // apii: function(endpoint,body,method, customHeaders={}){
-  apii: function(endpoint,body,method,query_parameter){
-  const url= `${process.env.API_KEYY}/api/v1/${endpoint}${query_parameter}`;
+  api: function(endpoint,body,method,query_parameter){
+  const url= `${process.env.API_KEY}/api/v1/${endpoint}${query_parameter}`;
   console.log(url);
 
   fetch(url, {

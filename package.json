@@ -20,6 +20,7 @@
     "react-native-dialogbox": "^0.6.10",
     "react-native-gesture-handler": "^1.5.3",
     "react-native-grid-component": "^2.0.1",
+    "react-native-gridview": "^0.1.2",
     "react-native-item-select": "^0.3.0",
     "react-native-popup-dialog": "^0.18.3",
     "react-native-safe-area-context": "^0.6.2",

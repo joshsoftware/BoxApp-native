@@ -6,8 +6,19 @@ import { createStackNavigator } from 'react-navigation-stack';
 import LevelPage from './pages/LevelPage';
 import Description from './pages/Description';
 import CitySports from './pages/CitySports';
+import SelectSport from './pages/SelectSport';
 
- 
+const MainNavigator = createStackNavigator({
+    SelectSports: SelectSport,
+   Sports: CitySports,
+   Select: SelectLevel,
+  Level: LevelPage,
+});
+
+const AppContainer = createAppContainer(MainNavigator);
+
+
+
 // const RootStack = createStackNavigator(
 //   {
 //     Select: SelectLevel,
@@ -22,10 +33,11 @@ import CitySports from './pages/CitySports';
 // const AppContainer = createAppContainer(RootStack);
 
 const App = () => {
-  // <SportsListPage />
+
+  
+
   return (
-     <CitySports />
-    //<AppContainer />
+     <AppContainer />
   );
 };
 
