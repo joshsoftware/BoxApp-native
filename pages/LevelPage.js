@@ -9,43 +9,41 @@ const LevelPage = (props) => {
 
   const {navigation} = props;
   const [datasource, setDataSource] = useState([]);
-  const [description, setDescription] = useState([]);
-
-    // const data = [
-    //   {level: 'B1'},
-    //   {level: 'B2'},
-    //   {level: 'B3'},
-    //   {level: 'C1'},
-    //   {level: 'C2'},
-    //   {level: 'C3'},
-    // ];
  
-    useEffect(()=>{
-      fetch("http://192.168.1.82:3000/api/v1/levels")
-      .then((response)=> response.json())
-      .then((responseJson) => {
-        setDataSource(responseJson)
-        console.log(responseJson)
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  useEffect(()=>{
+    fetch("http://192.168.1.82:3000/api/v1/levels")
+    .then((response)=> response.json())
+    .then((responseJson) => {
+      setDataSource(responseJson)
     })
+    .catch((error) => {
+      console.error(error);
+    });
+  }, []);
 
+  if(datasource.length>0)
+  {
     return (
       <ReactNativeItemSelect
         data = {datasource}
         itemComponent={
           item => (
             <View style={styles.item}>
-              <Text style={styles.text}>{item.level}</Text>
+              <Text style={styles.text}>{item.name}</Text>
+              <Text style={styles.text}>{item.description}</Text>
             </View>
           )
-        }
-        onSubmit={()=> navigation.navigate('Description')}
+          }
+        onSubmit={()=> navigation.navigate('Select')}
       />
     );
-  
+  }
+  else
+  {
+    return(
+      <Text>Loading.....</Text>
+    )
+  }
 }
  
 const styles = StyleSheet.create({
