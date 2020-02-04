@@ -10,7 +10,7 @@ const LevelPage = (props) => {
   const {navigation} = props;
  
   useEffect(()=>{
-    //ApiHelper.apii("levels",'','GET','')
+    //ApiHelper.api("levels",'','GET','')
       
     const user = {
       first_name: 'Anamika',
@@ -21,11 +21,11 @@ const LevelPage = (props) => {
       city_id: '8'
     }     
     const bodyy = JSON.stringify({user});
-    ApiHelper.apii("users",bodyy,'POST','')
+    ApiHelper.api("users",bodyy,'POST','')
   })
 
     return (
-      <Text>HELLOOOOOO</Text>
+      <Text>Showing Levels</Text>
     );
   
 }

@@ -10,26 +10,27 @@ function getDefault(){
 
 const ApiHelper = {
 
-  // apii: function(endpoint,body,method, customHeaders={}){
-  apii: function(endpoint,body,method,query_parameter){
-  const url= `${process.env.API_KEYY}/api/v1/${endpoint}${query_parameter}`;
-  console.log(url);
+  // api: function(endpoint,body,method, customHeaders={}){
 
-  fetch(url, {
-    method,
-    headers: {
-      ...getDefault()
-      //...customHeaders()
-    },
-    body
-  })
-  .then((response)=> response.json())
-  .then((responseJson) => {
-    console.log(responseJson)
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+  api: function(endpoint,body,method,query_parameter){
+
+    const url= `${process.env.API_KEY}/api/v1/${endpoint}${query_parameter}`;
+
+    fetch(url, {
+      method,
+      headers: {
+        ...getDefault()
+        //...customHeaders()
+      },
+      body
+    })
+    .then((response)=> response.json())
+    .then((responseJson) => {
+      console.log(responseJson)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 }
 
