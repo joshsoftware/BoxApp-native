@@ -23,7 +23,7 @@ const SignUpPage = (props) => {
   const addUser = () => {
     console.log("In add user method")
 
-    fetch("http://192.168.1.84:3000/api/v1/users",
+    fetch("http://192.168.1.69:3000/api/v1/users",
     {
       method: 'POST',
       headers:{
@@ -79,7 +79,7 @@ const SignUpPage = (props) => {
   }
 
   useEffect(()=>{
-    fetch("http://192.168.1.69:3000/api/v1/cities")
+    fetch("http://192.168.1.69:3002/api/v1/cities")
     .then((response) =>  response.json())
     .then((responseJson) => {
       setDataSource(responseJson)

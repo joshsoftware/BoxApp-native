@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
-import {Button, Text, Toast, theme } from 'galio-framework';
+import React, { useState } from 'react';
+import { StyleSheet, View, Linking, Alert } from 'react-native';
+import {Button, Text } from 'galio-framework';
 import { CustomInputPassword } from '../components/CustomInput';
 import { validateSetPassword, showAlertForInvalidInput } from '../components/Validation';
+import { setToken, getToken } from '../components/TokenManager';
+import qs from 'qs';
 
 const SetPasswordPage = (props) => {
 
-  const {navigation} = props;
+  const { navigation } = props;
   const [ user, setUser] = useState({});
   const [ errors, setErrors] = useState({});
 
@@ -15,10 +17,28 @@ const SetPasswordPage = (props) => {
       console.log(user)
   }
 
+  const extractTokenFromURL = () => {
+    console.log("In extract token")
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        console.log('Initial url is: ' + url); 
+
+        //url1 = "app://boxapp/setpassword?confirm=NPKZ9qxgWypV7Qmei1eP"
+        let urlArray=url.split("?")
+        let queryParams = urlArray[1]
+        let setPasswordToken = qs.parse(queryParams).confirm
+        console.log(setPasswordToken)
+        setToken('setPasswordToken', setPasswordToken)
+        return setPasswordToken
+      }
+    }).catch(err => console.error(err));
+  } 
+
+
   const setPasswordForUser = () => {
     console.log("In set password for user method")
     
-    fetch("http://192.168.1.84:3000/api/v1/users",
+    fetch("http://192.168.1.69:3000/api/v1/setpwd",
     {
       method: 'POST',
       headers:{
@@ -26,14 +46,17 @@ const SetPasswordPage = (props) => {
       },
       body: JSON.stringify({
         user: {
+          confirmation_token: extractTokenFromURL(),
           password: user.password,
-          confirmPassword: user.confirmPassword,
+          password_confirmation: user.confirmPassword,
         }      
       })
     }).then((result) => {
       if(result.status === 200){
-        console.log("User created");
-        console.log(result);
+        navigation.navigate('YourOpponents')
+      }
+      else{
+        Alert.alert("Unsuccessful","Sorry, password has not been set..")
       }
     }).catch((err) => {
       console.log(err);
@@ -82,7 +105,8 @@ const SetPasswordPage = (props) => {
             console.log(validationErrors);  
 
             if(noErrorsPresent(validationErrors)){
-              // setPasswordForUser()
+              setPasswordForUser()
+              //navigation.navigate('YourOpponents')
             }
             else{
               showAlertForInvalidInput(user, validationErrors)
