@@ -4,7 +4,7 @@ import {Button, Input, Text, Toast, theme } from 'galio-framework';
 import { CustomInputText, CustomInputPassword } from '../components/CustomInput';
 import YourOpponentsPage from '../pages/YourOpponentsPage';
 import { validateSignIn, showAlertForInvalidInput } from '../components/Validation';
-import { setToken } from '../components/TokenManager';
+import { setToken, getToken } from '../components/TokenManager';
 
 //Component to manage the Sign in page
 const SignInPage = (props) => {
@@ -22,7 +22,7 @@ const SignInPage = (props) => {
   //Method to be called when Sign in button is pressed
   const signIn = () => {
     console.log("In signIn method")
-    fetch("http://192.168.1.84:3000/api/v1/sessions",
+    fetch("http://192.168.1.69:3000/api/v1/sessions",
     {
       method: 'POST',
       headers:{
@@ -39,7 +39,7 @@ const SignInPage = (props) => {
         Alert.alert("Invalid details","Sorry email id or password is incorrect..")
       }
       else{
-        setToken(responseJson)
+        setToken('signInToken',responseJson)
         navigation.navigate('YourOpponents')
       }
     })
