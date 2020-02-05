@@ -1,9 +1,9 @@
 import React, { Component, useState, useEffect } from 'react';
 
-function getDefault(){
+function getDefaultHeaders(){
   const defaultHeaders = {
     'Accept': 'application/json',
-  'Content-Type': 'application/json'
+    'Content-Type': 'application/json'
   };
   return(defaultHeaders);
 }
@@ -19,7 +19,7 @@ const ApiHelper = {
     fetch(url, {
       method,
       headers: {
-        ...getDefault()
+        ...getDefaultHeaders()
         //...customHeaders()
       },
       body
