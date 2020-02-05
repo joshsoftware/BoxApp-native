@@ -35,8 +35,9 @@ const LevelPage = (props) => {
           itemDimension={130}
           items={datasource}
           style={styles.gridView}
+          keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
-            <TouchableOpacity onPress={setLevel}>
+            <TouchableOpacity onPress={() => setLevel(item.id)}>
               <View style={styles.item}>
                 <Text style={styles.text}>{item.name}</Text>
                 <Text style={styles.text}>{item.description}</Text>
