@@ -1,5 +1,4 @@
 # BoxApp-native
-# React Native App
 <h2> Installation dependencies </h2> <br />
 1. Node <br />
 2. Java Development Kit (JDK) <br />
