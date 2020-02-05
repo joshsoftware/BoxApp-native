@@ -1,9 +1,11 @@
 import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import ReactNativeItemSelect from 'react-native-item-select';
 import SelectLevel from './SelectLevel';
 import Description from './Description';
 import { NavigationEvents } from 'react-navigation';
+import { FlatGrid } from 'react-native-super-grid';
+import { Button } from 'galio-framework';
  
 const LevelPage = (props) => {
 
@@ -21,21 +23,36 @@ const LevelPage = (props) => {
     });
   }, []);
 
+  const setLevel = (name) => {
+    console.log(name);
+  }
+
   if(datasource.length>0)
   {
     return (
-      <ReactNativeItemSelect
-        data = {datasource}
-        itemComponent={
-          item => (
-            <View style={styles.item}>
-              <Text style={styles.text}>{item.name}</Text>
-              <Text style={styles.text}>{item.description}</Text>
-            </View>
-          )
-          }
-        onSubmit={()=> navigation.navigate('Select')}
-      />
+      <View style={styles.bodyContainer}>
+        <FlatGrid
+          itemDimension={130}
+          items={datasource}
+          style={styles.gridView}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity onPress={setLevel}>
+              <View style={styles.item}>
+                <Text style={styles.text}>{item.name}</Text>
+                <Text style={styles.text}>{item.description}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+        <Button
+          color="error" 
+          size="small" 
+          shadowColor="black" 
+          round
+          onPress={() => navigation.navigate('Select')}
+          style={styles.submitButton}>Submit
+        </Button>
+      </View>
     );
   }
   else
@@ -47,6 +64,13 @@ const LevelPage = (props) => {
 }
  
 const styles = StyleSheet.create({
+  bodyContainer: {
+    flex: 1,
+    alignItems: "center",
+    padding: "10%",
+    justifyContent: 'center',
+    backgroundColor: '#F9A28F',
+  },
   item: {
     flex: 1,
     height: 100,
@@ -61,6 +85,9 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontWeight: 'bold'
+  },
+  submitButton: {
+    margin: 10,
   }
 });
 
