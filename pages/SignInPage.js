@@ -8,20 +8,15 @@ import { setToken, getToken } from '../components/TokenManager';
 
 //Component to manage the Sign in page
 const SignInPage = (props) => {
-
   const {navigation} = props;
-
   const [ user, setUser] = useState({})
   const [ errors, setErrors] = useState({})
 
   const handleInput = (value, name) => {
       setUser({ ...user, [name]: value})
-      console.log(user)
   }
 
-  //Method to be called when Sign in button is pressed
   const signIn = () => {
-    console.log("In signIn method")
     fetch("http://192.168.1.84:3000/api/v1/sessions",
     {
       method: 'POST',
@@ -49,22 +44,17 @@ const SignInPage = (props) => {
   }
 
   const noErrorsPresent = (validationErrors) => {
-
-    if(validationErrors.emailId !== "" ||
-      validationErrors.password !== "")
-    return false
-
-    else
-      return true
+    return !validationErrors.emailId && !validationErrors.password
   }
 
+  /* Function to check whether input fields are valid
+    If so, api call for sign in
+    Else alert with invalid input is shown  */
   const checkForSignIn = () => {
     setErrors(validateSignIn(user))
     const validationErrors = validateSignIn(user)
-    console.log(validationErrors)
 
     if(noErrorsPresent(validationErrors)){
-      console.log("No errors")
       signIn()
     }
     else{
@@ -82,7 +72,7 @@ const SignInPage = (props) => {
         name="emailId" 
         defaultValue={user.emailId}
         handleInputChange={handleInput}
-        borderStyle={errors.emailId? styles.error : styles.textInputBorder}
+        borderStyle={ errors.emailId? styles.error : styles.textInputBorder }
       /> 
 
       <CustomInputPassword 
@@ -90,7 +80,7 @@ const SignInPage = (props) => {
         name="password"
         defaultValue={user.password}
         handleInputChange={handleInput}
-        borderStyle={errors.password? styles.error : styles.textInputBorder}
+        borderStyle={ errors.password? styles.error : styles.textInputBorder }
       />
 
       <Button 
@@ -99,7 +89,7 @@ const SignInPage = (props) => {
         shadowColor="black" 
         round
         style={styles.submitButton}
-        onPress={ checkForSignIn }>    Sign In
+        onPress={checkForSignIn}>    Sign In
       </Button>
 
       <Button 
@@ -143,6 +133,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   }
 });
-
 
 export default SignInPage;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Alert } from 'react-native';
+import GLOBAL from './GlobalConstants';
 
 const errorMessages = {
   emptyInput: "Input cannot be empty..\n", 
@@ -12,8 +12,8 @@ const errorMessages = {
   cityId: "Please select a city",
  }
 
+//Function to validate the inputs of sign up page and return errors if any
 const validateSignUp = (user) => {
-
   const { firstName, lastName, contactNumber, emailId } = user;
   return { 
     firstName: validateName(firstName) ? "" : errorMessages.firstName,  
@@ -24,6 +24,7 @@ const validateSignUp = (user) => {
   }
 }
 
+//Function to validate the inputs of sign in page and return errors if any
 const validateSignIn = (user) => {
   const { emailId, password } = user;
   return {
@@ -32,51 +33,62 @@ const validateSignIn = (user) => {
   }
 }
 
+//Function to validate the inputs of set password page and return errors if any
 const validateSetPassword = (user) => {
   const { password, confirmPassword } = user;
-  console.log(password, typeof(password))
   return {
     password: validatePassword(password) ? "" : errorMessages.password,
     confirmPassword: validateConfirmPassword(password, confirmPassword) ? "" : errorMessages.passwordMismatch,
   }
 }
 
+// Used for the validation of first name and last name, ie. strings consisting of only alphabets
 const validateName = (inputName) => {
-  const nameRegex = new RegExp(/^[A-Za-z]+$/);
+  const nameRegex = GLOBAL.regexForName;
   if(inputName === undefined || inputName === null)
     return false
   return nameRegex.test(inputName);
 }
 
+//Used for the validation of contact number, it must consist of 10 digits
 const validateNumber = (inputNumber) => {
-  const numberRegex = new RegExp(/^[0-9]{10}$/);
+  const numberRegex = GLOBAL.regexForContactNumber
   if(inputNumber === undefined || inputNumber === null)
     return false
   return numberRegex.test(inputNumber);
 }
 
+//Used to validate the email address provided by user
 const validateEmailId = (inputEmailId) => {
-  const emailRegex = new RegExp(/^[\w]+([._]?[\w]+)*@[\w]+([.][\w]{2,3})+$/);
+  const emailRegex = GLOBAL.regexForEmail
   if(inputEmailId === undefined || inputEmailId === null)
     return false
   return emailRegex.test(inputEmailId);
 }
 
+//Used to validate the password which should consist of atleast 6 digits
 const validatePassword = (inputPassword) => {
-  const passwordRegex = new RegExp(/^[0-9a-zA-Z!@#$%^&*_]{6,}$/);
+  const passwordRegex = GLOBAL.regexForPassword
   if (inputPassword === undefined || inputPassword === null)
     return false
   return passwordRegex.test(inputPassword);
 }
 
+//Input for city is taken from dropdown so always returns true
 const validateCity = () => {
   return true;
 }
 
+//To check if the input password and the confirm password is matching
 const validateConfirmPassword = (inputPassword, inputConfirmPassword) => {
   return inputPassword === inputConfirmPassword;
 }
 
+/*
+  Shows an alert in case of invalid input like 
+  "Please enter valid contact number" 
+  "Please enter a valid email address"
+*/
 const showAlertForInvalidInput = (object, errors) => {
   let errorString="", i;
   let objectKeys = Object.keys(object);
@@ -84,7 +96,6 @@ const showAlertForInvalidInput = (object, errors) => {
   if(objectKeys.length<=1){
     errorString += errorMessages.emptyInput;
   }
-
   else if(objectKeys.length>1){
     for (i in objectKeys){
       errorString += errors[objectKeys[i]];

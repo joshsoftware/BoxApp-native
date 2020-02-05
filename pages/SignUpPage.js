@@ -5,9 +5,7 @@ import { CustomInputText, CustomInputNumber } from '../components/CustomInput';
 import { validateSignUp, showAlertForInvalidInput } from '../components/Validation';
 
 const SignUpPage = (props) => {
-
   const {navigation} = props;
-  
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState("Pune");
 
@@ -16,13 +14,10 @@ const SignUpPage = (props) => {
   const [ errors, setErrors] = useState({})
 
   const handleInput = (value, name) => {
-      setUser({ ...user, [name]: value})
-      console.log(user)
+    setUser({ ...user, [name]: value})
   }
 
   const addUser = () => {
-    console.log("In add user method")
-
     fetch("http://192.168.1.84:3000/api/v1/users",
     {
       method: 'POST',
@@ -39,24 +34,17 @@ const SignUpPage = (props) => {
         }      
       })
     }).then((result) => {
-      if(result.status === 200){
+      if(result.ok){
         console.log("User created");
       }
-    }).catch((err) => {
-      console.log(err);
+    }).catch((error) => {
+      console.log(error);
     })
   }
 
   const noErrorsPresent = (validationErrors) => {
-
-    if(validationErrors.firstName !== "" ||
-      validationErrors.lastName !== "" ||
-      validationErrors.contactNumber !== "" ||
-      validationErrors.emailId !== "")
-    return false
-
-    else
-      return true
+    return !validationErrors.firstName && !validationErrors.lastName && 
+    !validationErrors.contactNumber && !validationErrors.emailId
   }
 
   const showAlertForEmailVerification = () => {
@@ -66,13 +54,11 @@ const SignUpPage = (props) => {
   const checkForSignUp = () => {
     setErrors(validateSignUp(user))
     const validationErrors = validateSignUp(user);
-    console.log(validationErrors)
 
     if(noErrorsPresent(validationErrors)){
       addUser()
       showAlertForEmailVerification()
     }
-
     else{
       showAlertForInvalidInput(user, validationErrors)
     }
@@ -89,6 +75,11 @@ const SignUpPage = (props) => {
     });
   },[]) 
   
+  const pickerHandler = (item, key) => {
+    setPickerValue(item);
+    handleInput(item,"cityId");
+  }
+
   return( 
     <View style={styles.bodyContainer}>
       
@@ -129,12 +120,9 @@ const SignUpPage = (props) => {
       <Picker
         selectedValue={pickerValue}
         style={styles.cityDropDown}
-        onValueChange={(item, key) => {
-          console.log(item)
-          setPickerValue(item);
-          handleInput(item,"cityId");
-        }}
-      >
+        onValueChange={
+          pickerHandler
+        }>
         { 
           datasource.map((item, key)=>(
           <Picker.Item label={item.name} value={item.id} key={key} />))
@@ -157,15 +145,6 @@ const SignUpPage = (props) => {
         round
         onPress={() => navigation.navigate('Intro')}
         style={styles.submitButton}>    Cancel
-      </Button>
-
-      <Button 
-        color="error" 
-        size="small" 
-        shadowColor="black" 
-        round
-        onPress={() => navigation.navigate('SetPassword')}
-        style={styles.submitButton}>    Set Password Page
       </Button>
 
     </View>

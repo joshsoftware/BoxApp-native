@@ -5,7 +5,6 @@ import SignUpPage from './SignUpPage';
 import SignInPage from './SignInPage';
 
 const IntroPage = (props) => { 
-
   const { navigation } = props;  
 
   return(
@@ -26,8 +25,7 @@ const IntroPage = (props) => {
             color="info" 
             size="small" 
             round 
-            onPress={() => navigation.navigate('SignUp')}>
-            Sign up with email
+            onPress={() => navigation.navigate('SignUp')}>  Sign up with email
           </Button>
         </View>
 
@@ -36,13 +34,10 @@ const IntroPage = (props) => {
             color="#50C7C7" 
             size="small" 
             round 
-            onPress={() => navigation.navigate('SignIn')}>
-            Already a user? Sign in
+            onPress={() => navigation.navigate('SignIn')}>  Already a user? Sign in
           </Button>
         </View>
-
-      </View>
-      
+      </View>      
     </View> 
   );
 };
@@ -56,8 +51,6 @@ const styles = StyleSheet.create({
   header:{
     flex:1,
     alignItems: "center",
-    // borderWidth: 1, 
-    // borderColor: 'black',
     padding: 100,
   },
 
@@ -65,14 +58,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "white",
     fontSize: 50,
-    // borderWidth: 1, 
-    // borderColor: 'black',
   },
 
   buttonsContainer: {
     alignItems: "center",
-    // borderWidth: 1, 
-    // borderColor: 'black',
   },
 
   button: {
@@ -81,8 +70,6 @@ const styles = StyleSheet.create({
 
   features: {
     padding: 120,
-    // borderWidth: 1, 
-    // borderColor: 'black',
   }
 });
 

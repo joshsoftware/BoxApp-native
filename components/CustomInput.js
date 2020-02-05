@@ -1,11 +1,8 @@
 import React  from 'react';
-import {Text, View} from 'react-native';
-import {Input, theme} from 'galio-framework';
+import { Input } from 'galio-framework';
 
 const CustomInputText = (props) => {
-
   const {placeholder, name, defaultValue, handleInputChange, borderStyle} =  props;
-
   return(
     <Input 
       placeholder={placeholder}
@@ -19,7 +16,6 @@ const CustomInputText = (props) => {
 }
 
 const CustomInputNumber = (props) => {
-
   const {placeholder, name, defaultValue, handleInputChange, borderStyle} =  props;
   return(
     <Input
@@ -36,9 +32,7 @@ const CustomInputNumber = (props) => {
 }
 
 const CustomInputPassword = (props) => {
-
   const {placeholder, name, defaultValue, handleInputChange, borderStyle} =  props;
-
   return(
     <Input 
       placeholder={placeholder} 
