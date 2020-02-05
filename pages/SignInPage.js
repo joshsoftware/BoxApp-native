@@ -22,7 +22,7 @@ const SignInPage = (props) => {
   //Method to be called when Sign in button is pressed
   const signIn = () => {
     console.log("In signIn method")
-    fetch("http://192.168.1.69:3000/api/v1/sessions",
+    fetch("http://192.168.1.84:3000/api/v1/sessions",
     {
       method: 'POST',
       headers:{
