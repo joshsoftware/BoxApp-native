@@ -6,12 +6,14 @@ import LevelPage from './LevelPage';
 const SelectLevel = (props) => {
 
   const {navigation} = props;
-
+  const level = JSON.stringify(navigation.getParam('boxlevel'));
+  console.log(level);
+  
   const state = () =>{
     isModalVisible = false;
   }
 
-
+  
   return(
     <View style={styles.bodyContainer}>
       <Button 

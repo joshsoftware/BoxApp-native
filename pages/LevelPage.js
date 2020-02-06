@@ -1,16 +1,16 @@
 import React, { Component, useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert, CheckBox} from 'react-native';
 import ReactNativeItemSelect from 'react-native-item-select';
 import SelectLevel from './SelectLevel';
-import Description from './Description';
+import Grid from './Grid';
 import { NavigationEvents } from 'react-navigation';
-import { FlatGrid } from 'react-native-super-grid';
 import { Button } from 'galio-framework';
  
 const LevelPage = (props) => {
 
   const {navigation} = props;
   const [datasource, setDataSource] = useState([]);
+  let level=0;
  
   useEffect(()=>{
     fetch("http://192.168.1.82:3000/api/v1/levels")
@@ -23,36 +23,67 @@ const LevelPage = (props) => {
     });
   }, []);
 
-  const setLevel = (name) => {
-    console.log(name);
+  const addLevel = (token, sportID, level) => {
+    console.log("In add Level method")
+
+    fetch("http://192.168.1.169:3000/api/v1/level_sports",
+    {
+      method: 'POST',
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4fQ.5m2O7KcykOJ8iOJoA8hcSxaeibYATt9aeeq3L2yYnQ0",
+         "sport_id": "1",
+         "level_id": "3"        
+      })
+    }).then((result) => {
+      if(result.status === 200){
+        console.log("Level submitted");
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const Check = () => {
+    if(level==0)
+    {
+      alert('Please Select Level');
+    }
+    else
+    {
+      addLevel();
+    }
+  }
+
+  const setLevel = (id, name) => {
+    Alert.alert(  
+      'Level '+name+' selected',  
+      'Are You Sure You Want To Submit The Level',  
+      [  
+        {  
+            text: 'Cancel',  
+            onPress: () => console.log('Cancel Pressed')  
+        },  
+        {
+          text: 'OK', 
+          onPress: () => addLevel()
+        },  
+      ]  
+    );  
+    level = id;
+    console.log(level);
   }
 
   if(datasource.length>0)
   {
     return (
       <View style={styles.bodyContainer}>
-        <FlatGrid
-          itemDimension={130}
+        <Grid
           items={datasource}
-          style={styles.gridView}
-          keyExtractor={item => item.id}
-          renderItem={({ item, index }) => (
-            <TouchableOpacity onPress={() => setLevel(item.id)}>
-              <View style={styles.item}>
-                <Text style={styles.text}>{item.name}</Text>
-                <Text style={styles.text}>{item.description}</Text>
-              </View>
-            </TouchableOpacity>
-          )}
+          setLevelChange={setLevel}
         />
-        <Button
-          color="error" 
-          size="small" 
-          shadowColor="black" 
-          round
-          onPress={() => navigation.navigate('Select')}
-          style={styles.submitButton}>Submit
-        </Button>
       </View>
     );
   }
@@ -68,7 +99,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flex: 1,
     alignItems: "center",
-    padding: "10%",
+    padding: "5%",
     justifyContent: 'center',
     backgroundColor: '#F9A28F',
   },
