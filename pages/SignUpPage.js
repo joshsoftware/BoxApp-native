@@ -49,13 +49,16 @@ const SignUpPage = (props) => {
   }
 
   const showAlertForEmailVerification = () => {
-    Alert.alert("An email verification link has been sent to you. Please verify yourself.")
+    Alert.alert("Email Verification","An email verification link has been sent to you. Please verify yourself.")
   }
   
   const showAlertForEmailExists = () => {
-    Alert.alert("This email address is already registered.")
+    Alert.alert("Already Registered","This email address is already registered.")
   }
 
+  const showAlertForServerError = () => {
+    Alert.alert("Server Error","Sorry, cannot process further. Server error..")
+  }
 
   const checkForSignUp = () => {
     setErrors(validateSignUp(user))
@@ -70,7 +73,7 @@ const SignUpPage = (props) => {
   }
 
   useEffect(()=>{
-    fetch("http://192.168.1.69:3000/api/v1/cities")
+    fetch("http://192.168.1.84:3000/api/v1/cities")
     .then((response) =>  response.json())
     .then((responseJson) => {
       setDataSource(responseJson)
@@ -125,9 +128,8 @@ const SignUpPage = (props) => {
       <Picker
         selectedValue={pickerValue}
         style={styles.cityDropDown}
-        onValueChange={
-          pickerHandler
-        }>
+        onValueChange={pickerHandler}
+      >
         { 
           datasource.map((item, key)=>(
           <Picker.Item label={item.name} value={item.id} key={key} />))

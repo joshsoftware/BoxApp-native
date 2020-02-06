@@ -4,6 +4,9 @@ import SignUpPage from './pages/SignUpPage';
 import SetPasswordPage from './pages/SetPasswordPage';
 import SignInPage from './pages/SignInPage';
 import YourOpponentsPage from './pages/YourOpponentsPage';
+import SelectSport from './pages/SelectSport';
+import LevelPage from './pages/LevelPage';
+import CitySports from './pages/CitySports';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -47,6 +50,10 @@ const RootStack = createStackNavigator(
       },
       path: 'youropponents',
     },
+
+    Select: SelectSport,
+    Level: LevelPage,
+    Sports: CitySports,
   },
   {
     initialRouteName: 'Intro',

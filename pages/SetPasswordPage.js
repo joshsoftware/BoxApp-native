@@ -4,7 +4,6 @@ import {Button, Text } from 'galio-framework';
 import { CustomInputPassword } from '../components/CustomInput';
 import { validateSetPassword, showAlertForInvalidInput } from '../components/Validation';
 import { setToken } from '../components/TokenManager';
-import qs from 'qs';
 
 const SetPasswordPage = (props) => {
   const { navigation } = props;
@@ -39,8 +38,8 @@ const SetPasswordPage = (props) => {
     .then((response) => response.json())
     .then((responseJson) => {
       setToken('setPasswordToken',responseJson)
-      Alert.alert("Password has been set successfully..")
-      navigation.navigate('YourOpponents')
+      Alert.alert("Successful","Password has been set successfully..")
+      navigation.navigate('Sports')
     })
     .catch((err) => {
       console.log("Error",err);
