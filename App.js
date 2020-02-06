@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import IntroPage from './pages/IntroPage';
 import SignUpPage from './pages/SignUpPage';
 import SetPasswordPage from './pages/SetPasswordPage';
@@ -58,6 +58,7 @@ const AppContainer = createAppContainer(RootStack);
 const App = () => {
 
   const prefix = "app://boxapp/"
+
   return (
     <AppContainer uriPrefix={prefix} />
   );

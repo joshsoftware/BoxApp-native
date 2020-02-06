@@ -36,6 +36,7 @@ const SignUpPage = (props) => {
     }).then((result) => {
       if(result.ok){
         console.log("User created");
+        showAlertForEmailVerification()
       }
     }).catch((error) => {
       console.log(error);
@@ -49,15 +50,19 @@ const SignUpPage = (props) => {
 
   const showAlertForEmailVerification = () => {
     Alert.alert("An email verification link has been sent to you. Please verify yourself.")
-  } 
+  }
   
+  const showAlertForEmailExists = () => {
+    Alert.alert("This email address is already registered.")
+  }
+
+
   const checkForSignUp = () => {
     setErrors(validateSignUp(user))
     const validationErrors = validateSignUp(user);
 
     if(noErrorsPresent(validationErrors)){
       addUser()
-      showAlertForEmailVerification()
     }
     else{
       showAlertForInvalidInput(user, validationErrors)
