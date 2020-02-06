@@ -1,14 +1,16 @@
 import React from 'react';
 import {  StyleSheet, View, Text} from 'react-native';
-import SelectLevel from './pages/SelectLevel';
+import SelectLevel from './pages/SelectSport';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import LevelPage from './pages/LevelPage';
+import CitySports from './pages/CitySports';
 
 const RootStack = createStackNavigator(
   {
     Select: SelectLevel,
-    Level: LevelPage
+    Level: LevelPage,
+    Sports: CitySports
   },
   {
     initialRouteName: 'Select',

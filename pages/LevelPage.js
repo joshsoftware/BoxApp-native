@@ -1,7 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert, CheckBox} from 'react-native';
 import ReactNativeItemSelect from 'react-native-item-select';
-import SelectLevel from './SelectLevel';
 import Grid from './Grid';
 import { NavigationEvents } from 'react-navigation';
 import { Button } from 'galio-framework';
@@ -11,6 +10,9 @@ const LevelPage = (props) => {
   const {navigation} = props;
   const [datasource, setDataSource] = useState([]);
   let level=0;
+  const sport_id = JSON.stringify(navigation.getParam('sport'));
+  const sport_name = JSON.stringify(navigation.getParam('sportname'));
+  const token = navigation.getParam('token');
  
   useEffect(()=>{
     fetch("http://192.168.1.82:3000/api/v1/levels")
@@ -33,9 +35,9 @@ const LevelPage = (props) => {
         "Content-Type":"application/json"
       },
       body: JSON.stringify({
-         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4fQ.5m2O7KcykOJ8iOJoA8hcSxaeibYATt9aeeq3L2yYnQ0",
-         "sport_id": "1",
-         "level_id": "3"        
+         "token": token,
+         "sport_id": sportID,
+         "level_id": level        
       })
     }).then((result) => {
       if(result.status === 200){
@@ -68,7 +70,7 @@ const LevelPage = (props) => {
         },  
         {
           text: 'OK', 
-          onPress: () => addLevel()
+          onPress: () => addLevel(token, sport_id, level)
         },  
       ]  
     );  
