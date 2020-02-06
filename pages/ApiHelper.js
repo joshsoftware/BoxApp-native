@@ -26,10 +26,10 @@ const ApiHelper = {
     })
     .then((response)=> response.json())
     .then((responseJson) => {
-      console.log(responseJson)
+      return responseJson;
     })
     .catch((error) => {
-      console.error(error);
+      throw error;
     });
   }
 }
