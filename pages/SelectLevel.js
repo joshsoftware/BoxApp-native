@@ -6,6 +6,12 @@ import LevelPage from './LevelPage';
 const SelectLevel = (props) => {
 
   const {navigation} = props;
+   const selectedSport = JSON.stringify(navigation.getParam('sport'));
+
+  // const selectedSportname = JSON.stringify(navigation.getParam('sportname'));
+  // console.log(selectedSportname);
+
+
   
   return(
     <View style={styles.bodyContainer}>

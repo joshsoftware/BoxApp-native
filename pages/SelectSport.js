@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Picker, ScrollView, TouchableOpacity } from 'react-native';
 import {Button, Input, Text, Block, theme, Card } from 'galio-framework';
-import LevelPage from './LevelPage';
+
 
 const SelectSport = (props) => {
 
