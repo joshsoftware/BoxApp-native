@@ -3,44 +3,43 @@ import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Text} from 'galio-framework';
 import LevelPage from './LevelPage';
 import Grid from './Grid';
-import { getToken } from '../components/TokenManager';
+import {getToken} from '../components/TokenManager';
+import ApiHelper from './ApiHelper';
 
 const CitySports = props => {
   const {navigation} = props;
   const [datasource, setDataSource] = useState([]);
+  const tokenObject = navigation.getParam('token');
 
+  /** Fetch sports list for user city */
   useEffect(() => {
-    fetch('http://192.168.1.84:3000/api/v1/city_sports/display', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        token: getToken('setPasswordToken').token,
-      }),
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        setDataSource(responseJson);
+    if (tokenObject['token']) {
+      ApiHelper('city_sports/display', {}, {}, 'GET', {
+        'user-auth-token': tokenObject['token'],
       })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+        .then(responseJson => {
+          setDataSource(responseJson);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }, [tokenObject]);
 
   const onSelect = (number, name) => {
     let sportId = number;
     let sportName = name;
-    navigation.navigate('Level', {sport: sportId, sportname: sportName, token: getToken('setPasswordToken').token});
+    navigation.navigate('Level', {
+      sport: sportId,
+      sportname: sportName,
+      token: tokenObject['token'],
+    });
   };
 
   if (datasource.length > 0) {
     return (
       <View>
-        <Grid
-            items={datasource}
-            setLevelChange={onSelect}
-        />
+        <Grid items={datasource} setLevelChange={onSelect} />
       </View>
     );
   } else {

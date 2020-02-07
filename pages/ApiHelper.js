@@ -1,34 +1,46 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import qs from 'query-string';
 
-function getDefaultHeaders(){
+function getDefaultHeaders() {
   const defaultHeaders = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   };
-  return(defaultHeaders);
+  return defaultHeaders;
 }
 
-export default function(endpoint, body = {}, query_parameter = {}, method = "GET", headers={}){
-  let url = `${process.env.API_KEY}/api/v1${endpoint}`;
+export default function(
+  endpoint,
+  body = {},
+  query_parameter = {},
+  method = 'GET',
+  headers = {},
+) {
+  let url = `${process.env.API_URL}/api/v1/${endpoint}`;
 
-  if(method=="GET" && Object.keys(query_parameter).length > 0) {
-    url= `${url}?${qs.stringify(query_parameter)}`;
-  } 
-  
+  if (method == 'GET' && Object.keys(query_parameter).length > 0) {
+    url = `${url}?${qs.stringify(query_parameter)}`;
+  }
+
   return fetch(url, {
     method,
     headers: {
       ...getDefaultHeaders(),
-      ...headers
+      ...headers,
     },
-    body
+    body: JSON.stringify(body),
   })
-  .then((response)=> response.json())
-  .then((responseJson) => {
-    return responseJson;
-  })
-  .catch((error) => {
-    throw error;
-  });
+    .then(responseJson => {
+      if (responseJson.ok) {
+        return responseJson.json();
+      }
+
+      throw new Error(responseJson);
+    })
+    .then(jsonResponse => {
+      return jsonResponse;
+    })
+    .catch(error => {
+      throw error;
+    });
 }
