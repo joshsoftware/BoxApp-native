@@ -1,36 +1,39 @@
-import React, { Component, useState, useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {STORE_RESPONSE} from '../actions/StoreResponse';
 
-function getDefault(){
+function getDefault() {
   const defaultHeaders = {
-    'Accept': 'application/json',
-  'Content-Type': 'application/json'
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   };
-  return(defaultHeaders);
+  return defaultHeaders;
 }
+const dispatch = useDispatch();
+const ResponseReducer = useSelector(state => state.StoreResponseReducer);
+console.log(ResponseReducer);
 
-const ApiHelper = {
-
-  // apii: function(endpoint,body,method, customHeaders={}){
-  api: function(endpoint,body,method,query_parameter){
-  const url= `${process.env.API_KEY}/api/v1/${endpoint}${query_parameter}`;
+const ApiHelper = (endpoint, body, method, query_parameter) => {
+  const url = `${process.env.API_KEY}/api/v1/${endpoint}${query_parameter}`;
   console.log(url);
+  let method1 = method;
+  let body1 = body;
 
   fetch(url, {
-    method,
+    method1,
     headers: {
-      ...getDefault()
+      ...getDefault(),
       //...customHeaders()
     },
-    body
+    body1,
   })
-  .then((response)=> response.json())
-  .then((responseJson) => {
-    console.log(responseJson)
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-  }
-}
+    .then(response => response.json())
+    .then(responseJson => {
+      console.log(responseJson);
+      dispatch(STORE_RESPONSE(responseJson));
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
 
-export default ApiHelper;
+export {ApiHelper};
