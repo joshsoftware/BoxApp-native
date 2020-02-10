@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Picker, ScrollView, TouchableOpacity, Modal } from 'react-native';
-import {Button, Input, Text, Block, theme, Card } from 'galio-framework';
-import LevelPage from './LevelPage';
+import { StyleSheet, View } from 'react-native';
+import {Button } from 'galio-framework';
+import Opponets from './Opponents';
 
-const SelectSport = (props) => {
+const Select = (props) => {
 
   const {navigation} = props;
-  const level = JSON.stringify(navigation.getParam('boxlevel'));
-  console.log(level);
 
   return(
     <View style={styles.bodyContainer}>
@@ -16,8 +14,8 @@ const SelectSport = (props) => {
         size="small" 
         shadowColor="black" 
         round
-        onPress={()=> navigation.navigate('Sports')}
-        style={styles.submitButton}>    Select Sport
+        onPress={()=> navigation.navigate('Opponents')}
+        style={styles.submitButton}>    Show Opponents
       </Button>
     </View>
   )
@@ -60,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SelectSport;
+export default Select;
