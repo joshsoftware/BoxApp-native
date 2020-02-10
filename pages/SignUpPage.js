@@ -12,6 +12,7 @@ const SignUpPage = props => {
   const {navigation} = props;
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState('Pune');
+  const [isLoading, setIsLoading] = useState(false);
 
   //Initializing user fields
   const [user, setUser] = useState({});
@@ -22,9 +23,10 @@ const SignUpPage = props => {
   };
 
   const addUser = () => {
+    setIsLoading(true);
     ApiHelper(
       'users',
-      {
+      JSON.stringify({
         user: {
           first_name: user.firstName,
           last_name: user.lastName,
@@ -32,14 +34,13 @@ const SignUpPage = props => {
           email: user.emailId,
           city_id: user.cityId,
         },
-      },
+      }),
       {},
       'POST',
     )
-      .then(result => {
-        if (result.ok) {
-          showAlertForEmailVerification();
-        }
+      .then(responseJson => {
+        setIsLoading(false);
+        Alert.alert('Registration status', responseJson.message);
       })
       .catch(error => {
         console.log(error);
@@ -215,6 +216,17 @@ const styles = StyleSheet.create({
   textInputBorder: {
     borderColor: 'yellow',
     borderWidth: 1,
+  },
+
+  loadingContainer: {
+    position: 'absolute',
+    zIndex: 10,
+    backgroundColor: '#ffffff',
+    opacity: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
 });
 

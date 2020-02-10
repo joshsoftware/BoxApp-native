@@ -11,7 +11,7 @@ function getDefaultHeaders() {
 
 export default function(
   endpoint,
-  body = {},
+  body = null,
   query_parameter = {},
   method = 'GET',
   headers = {},
@@ -28,14 +28,10 @@ export default function(
       ...getDefaultHeaders(),
       ...headers,
     },
-    body: JSON.stringify(body),
+    body,
   })
-    .then(responseJson => {
-      if (responseJson.ok) {
-        return responseJson.json();
-      }
-
-      throw new Error(responseJson);
+    .then(response => {
+      return response.json();
     })
     .then(jsonResponse => {
       return jsonResponse;

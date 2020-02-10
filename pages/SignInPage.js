@@ -23,10 +23,10 @@ const SignInPage = props => {
   const signIn = () => {
     ApiHelper(
       'sessions',
-      {
+      JSON.stringify({
         email: user.emailId,
         password: user.password,
-      },
+      }),
       {},
       'POST',
     )
@@ -38,7 +38,7 @@ const SignInPage = props => {
           );
         } else {
           setToken('signInToken', responseJson);
-          navigation.navigate('YourOpponents');
+          navigation.navigate('Opponents', {token: responseJson.token});
         }
       })
       .catch(error => {
@@ -47,7 +47,7 @@ const SignInPage = props => {
   };
 
   const noErrorsPresent = validationErrors => {
-    return !validationErrors.emailId && !validationErrors.password;
+    return !validationErrors.emailId;
   };
 
   /* Function to check whether input fields are valid
@@ -93,7 +93,6 @@ const SignInPage = props => {
         round
         style={styles.submitButton}
         onPress={checkForSignIn}>
-        {' '}
         Sign In
       </Button>
 
@@ -104,7 +103,6 @@ const SignInPage = props => {
         round
         onPress={() => navigation.navigate('Intro')}
         style={styles.submitButton}>
-        {' '}
         Cancel
       </Button>
     </View>

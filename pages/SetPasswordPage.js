@@ -25,14 +25,14 @@ const SetPasswordPage = props => {
 
   const setPasswordForUser = () => {
     ApiHelper(
-      'setpwd',
-      {
+      'set_password',
+      JSON.stringify({
         user: {
           confirmation_token: confirmationToken,
           password: user.password,
           password_confirmation: user.confirmPassword,
         },
-      },
+      }),
       {},
       'POST',
     )

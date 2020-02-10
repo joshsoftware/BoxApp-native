@@ -14,10 +14,11 @@ const CitySports = props => {
   /** Fetch sports list for user city */
   useEffect(() => {
     if (tokenObject['token']) {
-      ApiHelper('city_sports/display', {}, {}, 'GET', {
+      ApiHelper('city_sports/display', null, {}, 'GET', {
         'user-auth-token': tokenObject['token'],
       })
         .then(responseJson => {
+          console.log(responseJson);
           setDataSource(responseJson);
         })
         .catch(error => {
@@ -46,36 +47,5 @@ const CitySports = props => {
     return <Text>Loading.....</Text>;
   }
 };
-
-const styles = StyleSheet.create({
-  bodyContainer: {
-    flex: 1,
-    alignItems: 'center',
-    width: '100%',
-    height: '30%',
-    padding: '50%',
-    backgroundColor: '#cff089',
-  },
-  item: {
-    flex: 1,
-    height: 100,
-    margin: 1,
-    borderColor: 'black',
-    borderWidth: 5,
-    backgroundColor: 'pink',
-  },
-  list: {
-    flex: 1,
-  },
-  text: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    padding: '23%',
-  },
-  registerLabel: {
-    padding: '70%',
-    textAlign: 'center',
-  },
-});
 
 export default CitySports;

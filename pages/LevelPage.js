@@ -21,9 +21,18 @@ const LevelPage = props => {
   const token = navigation.getParam('token');
 
   useEffect(() => {
-    ApiHelper('levels')
+    ApiHelper(
+      'city_sport_levels',
+      JSON.stringify({sport_id: sport_id}),
+      {},
+      'POST',
+      {
+        'user-auth-token': token,
+      },
+    )
       .then(responseJson => {
         setDataSource(responseJson);
+        console.log('Levels info', responseJson);
       })
       .catch(error => {
         console.error(error);
@@ -33,18 +42,17 @@ const LevelPage = props => {
   const addLevel = (token, sportID, level) => {
     ApiHelper(
       'level_sports',
-      {
-        token: token,
+      JSON.stringify({
         sport_id: sportID,
         level_id: level,
-      },
+      }),
       {},
       'POST',
+      {'user-auth-token': token},
     )
-      .then(result => {
-        if (result.status === 200) {
-          navigation.navigate('YourOpponents');
-        }
+      .then(responseJson => {
+        Alert.alert('Sports and level status', responseJson.message);
+        navigation.navigate('Opponents', {token: token});
       })
       .catch(err => {
         console.log(err);

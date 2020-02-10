@@ -3,8 +3,8 @@ import IntroPage from './pages/IntroPage';
 import SignUpPage from './pages/SignUpPage';
 import SetPasswordPage from './pages/SetPasswordPage';
 import SignInPage from './pages/SignInPage';
-import YourOpponentsPage from './pages/YourOpponentsPage';
-import SelectSport from './pages/SelectSport';
+import Opponents from './pages/Opponents';
+import Select from './pages/Select';
 import LevelPage from './pages/LevelPage';
 import CitySports from './pages/CitySports';
 import {createAppContainer} from 'react-navigation';
@@ -31,6 +31,7 @@ const RootStack = createStackNavigator(
       screen: SetPasswordPage,
       navigationOptions: {
         headerTitle: 'Set Password',
+        headerLeft: null,
       },
       path: 'setpassword',
     },
@@ -43,17 +44,17 @@ const RootStack = createStackNavigator(
       path: 'signin',
     },
 
-    YourOpponents: {
-      screen: YourOpponentsPage,
-      navigationOptions: {
-        headerTitle: 'Your Opponents',
-      },
-      path: 'youropponents',
-    },
-
-    Select: SelectSport,
+    Select: Select,
     Level: LevelPage,
     Sports: CitySports,
+
+    Opponents: {
+      screen: Opponents,
+      navigationOptions: {
+        headerTitle: 'Your Opponents',
+        headerLeft: null,
+      },
+    },
   },
   {
     initialRouteName: 'Intro',
