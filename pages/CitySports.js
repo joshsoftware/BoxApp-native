@@ -1,51 +1,74 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Text} from 'galio-framework';
-import LevelPage from './LevelPage';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, BackHandler, Alert } from 'react-native';
+import { Text } from 'galio-framework';
 import Grid from './Grid';
-import {getToken} from '../components/TokenManager';
 import ApiHelper from './ApiHelper';
 
-const CitySports = props => {
-  const {navigation} = props;
-  const [datasource, setDataSource] = useState([]);
-  const tokenObject = navigation.getParam('token');
+const CitySports = (props) => {
+	const { navigation } = props;
+	const [ datasource, setDataSource ] = useState([]);
+	const tokenObject = navigation.getParam('token');
 
-  /** Fetch sports list for user city */
-  useEffect(() => {
-    if (tokenObject['token']) {
-      ApiHelper('city_sports/display', null, {}, 'GET', {
-        'user-auth-token': tokenObject['token'],
-      })
-        .then(responseJson => {
-          console.log(responseJson);
-          setDataSource(responseJson);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }, [tokenObject]);
+	/* Fetch sports list for user city */
+	useEffect(
+		() => {
+			BackHandler.addEventListener('hardwareBackPress', () => {
+				Alert.alert('Exit', 'Are you sure you want to exit?', [
+					{
+						text: 'Cancel',
+						onPress: () => {}
+					},
+					{
+						text: 'OK',
+						onPress: () => {
+							BackHandler.exitApp();
+						}
+					}
+				]);
+				return true;
+			});
 
-  const onSelect = (number, name) => {
-    let sportId = number;
-    let sportName = name;
-    navigation.navigate('Level', {
-      sport: sportId,
-      sportname: sportName,
-      token: tokenObject['token'],
-    });
-  };
+			if (tokenObject['token']) {
+				ApiHelper('city_sports/display', null, {}, 'GET', {
+					'user-auth-token': tokenObject['token']
+				})
+					.then((responseJson) => {
+						setDataSource(responseJson);
+					})
+					.catch((error) => {
+						console.log(error);
+					});
+			}
+		},
+		[ tokenObject ]
+	);
 
-  if (datasource.length > 0) {
-    return (
-      <View>
-        <Grid items={datasource} setLevelChange={onSelect} />
-      </View>
-    );
-  } else {
-    return <Text>Loading.....</Text>;
-  }
+	const onSelect = (number, name) => {
+		let sportId = number;
+		let sportName = name;
+		navigation.navigate('Level', {
+			sport: sportId,
+			sportname: sportName,
+			token: tokenObject['token']
+		});
+	};
+
+	if (datasource.length > 0) {
+		return (
+			<View style={styles.body}>
+				<Grid items={datasource} setLevelChange={onSelect} />
+			</View>
+		);
+	} else {
+		return <Text>Loading.....</Text>;
+	}
 };
+
+const styles = StyleSheet.create({
+	body: {
+		backgroundColor: '#041530',
+		flex: 1
+	}
+});
 
 export default CitySports;
