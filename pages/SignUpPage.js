@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Picker, ScrollView, Alert, ActivityIndicator, Dimensions } from 'react-native';
+import { StyleSheet, View, Picker, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { Button, Input, Text, Toast, theme } from 'galio-framework';
 import { CustomInputText, CustomInputNumber } from '../components/CustomInput';
 import { validateSignUp, showAlertForInvalidInput } from '../components/Validation';
@@ -37,10 +37,16 @@ const SignUpPage = (props) => {
 		)
 			.then((responseJson) => {
 				setIsLoading(false);
-				Alert.alert('Registration status', responseJson.message);
+				if(responseJson.error){
+					Alert.alert('Registration status',responseJson.error)
+				}
+				else{
+					Alert.alert('Registration status', responseJson.message);
+					navigation.navigate('Intro')
+				}
 			})
 			.catch((error) => {
-				console.log(error);
+				Alert.alert("Server error", "An unexpected error has occured, cannot process further registration..")
 			});
 	};
 
@@ -51,10 +57,6 @@ const SignUpPage = (props) => {
 			!validationErrors.contactNumber &&
 			!validationErrors.emailId
 		);
-	};
-
-	const showAlertForServerError = () => {
-		Alert.alert('Server Error', 'Sorry, cannot process further. Server error..');
 	};
 
 	const checkForSignUp = () => {
@@ -74,7 +76,13 @@ const SignUpPage = (props) => {
 				setDataSource(responseJson);
 			})
 			.catch((error) => {
-				console.error(error);
+				Alert.alert("Server error","An unexpected error has occured, unable to fetch cities..",[
+					{
+						text: 'OK',
+						onPress: () => navigation.navigate('Intro')
+					}
+				])
+				
 			});
 	}, []);
 
@@ -82,8 +90,6 @@ const SignUpPage = (props) => {
 		setPickerValue(item);
 		handleInput(item, 'cityId');
 	};
-
-	let screenWidth = Dimensions.get('window').width;
 
 	return (
 		<ScrollView style={styles.bodyContainer} centerContent={true}>

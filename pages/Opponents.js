@@ -5,10 +5,13 @@ import { NavigationEvents } from 'react-navigation';
 import { Button } from 'galio-framework';
 import Mycard from './MyCard';
 import ApiHelper from './ApiHelper';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Opponents = (props) => {
 	const { navigation } = props;
 	const [ datasource, setDataSource ] = useState([]);
+	const [ fetchOpponents, setFetchOpponents ] = useState(false);
+	const [ noOfPlayersRemainingText, setNoOfPlayersRemainingText ] = useState('');
 	const token = navigation.getParam('token');
 
 	useEffect(() => {
@@ -30,28 +33,48 @@ const Opponents = (props) => {
 
 		ApiHelper('list_opponents', null, {}, 'GET', { 'user-auth-token': token })
 			.then((responseJson) => {
-				setDataSource(responseJson);
+				setFetchOpponents(true);
+				setDataSource(responseJson.opponents);
+				let remainingText = responseJson.free_slots + ' more player';
+				if (responseJson.free_slots > 1) remainingText += 's';
+				setNoOfPlayersRemainingText(remainingText);
 			})
 			.catch((error) => {
-				console.error(error);
+				Alert.alert('Server error', 'An unexpected error has occured, unable to fetch opponents..');
 			});
 	}, []);
+
+	const signOut = () => {
+		AsyncStorage.clear();
+		navigation.navigate('Intro');
+	};
 
 	let count = Object.keys(datasource).length;
 	return (
 		<View style={styles.bodyContainer}>
+			<View style={styles.buttonsContainer}>
+				<Button color="info" size="small" shadowColor="black" round onPress={signOut}>
+					Sign Out
+				</Button>
+			</View>
+
 			<View>
 				{datasource.map((user, i) => {
 					return (
 						<View>
 							<ScrollView>
-								<Mycard name={user.first_name + ' ' + user.last_name} number={user.contact_number} />
+								<Mycard
+									key={user.id}
+									name={user.first_name + ' ' + user.last_name}
+									number={user.contact_number}
+								/>
 							</ScrollView>
 						</View>
 					);
 				})}
 			</View>
-			{count < 4 && <Text style={styles.text}>We are waiting for more players to join..</Text>}
+			{fetchOpponents &&
+			count < 4 && <Text style={styles.text}>We are waiting for {noOfPlayersRemainingText} to join..</Text>}
 		</View>
 	);
 };
@@ -91,6 +114,10 @@ const styles = StyleSheet.create({
 		width: 50,
 		height: 50,
 		resizeMode: 'stretch'
+	},
+	buttonsContainer: {
+		alignItems: 'flex-end',
+		margin: 10
 	}
 });
 

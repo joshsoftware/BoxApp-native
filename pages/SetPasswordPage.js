@@ -34,12 +34,16 @@ const SetPasswordPage = (props) => {
 			'POST'
 		)
 			.then((responseJson) => {
-				setToken('setPasswordToken', responseJson);
-				Alert.alert('Successful', 'Password has been set successfully..');
-				navigation.navigate('Sports', { token: responseJson });
+				if (responseJson.error) {
+					Alert.alert('Server Error', responseJson.error);
+				} else {
+					setToken('setPasswordToken', responseJson);
+					Alert.alert('Successful', 'Password has been set successfully..');
+					navigation.navigate('Sports', { token: responseJson });
+				}
 			})
 			.catch((err) => {
-				console.log('Error', err);
+				Alert.alert('Server error', 'An unexpected error has occured, unable to set password..');
 			});
 		confirmationToken = '';
 	};
@@ -49,7 +53,6 @@ const SetPasswordPage = (props) => {
 	};
 
 	const cancelPressed = () => {
-		console.log('pressed');
 		navigation.navigate('Intro');
 	};
 

@@ -36,7 +36,7 @@ const SignInPage = (props) => {
 				}
 			})
 			.catch((error) => {
-				console.error(error);
+				Alert.alert('Server error', 'An unexpected error has occured, cannot sign in..');
 			});
 	};
 

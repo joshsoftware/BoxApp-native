@@ -21,7 +21,7 @@ const LevelPage = (props) => {
 				setDataSource(responseJson);
 			})
 			.catch((error) => {
-				console.error(error);
+				Alert.alert('Server error', 'Sorry, an unexpected error has occured..');
 			});
 	}, []);
 
@@ -41,7 +41,10 @@ const LevelPage = (props) => {
 				navigation.navigate('Opponents', { token: token });
 			})
 			.catch((err) => {
-				console.log(err);
+				Alert.alert(
+					'Server Error',
+					'An unexpected error has occured, unable to store selected sport and level.'
+				);
 			});
 	};
 
@@ -61,7 +64,7 @@ const LevelPage = (props) => {
 		Alert.alert('Level ' + name + ' selected', 'Are you sure you want to select this level?', [
 			{
 				text: 'Cancel',
-				onPress: () => console.log('Cancel Pressed')
+				onPress: () => {}
 			},
 			{
 				text: 'OK',

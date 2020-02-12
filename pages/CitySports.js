@@ -36,7 +36,7 @@ const CitySports = (props) => {
 						setDataSource(responseJson);
 					})
 					.catch((error) => {
-						console.log(error);
+						Alert.alert('Server error', 'An unexpected error has occured, unable to fetch sports..');
 					});
 			}
 		},
