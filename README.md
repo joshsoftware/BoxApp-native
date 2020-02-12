@@ -1,5 +1,5 @@
 # BoxApp-native
-[![Maintainability](https://api.codeclimate.com/v1/badges/70111e067fd3922ac648/maintainability)](https://codeclimate.com/repos/5e42b1f394639000cd002772/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/58cc9ad5c9af8962b5c7/maintainability)](https://codeclimate.com/repos/5e42b231a448ca00f80024ff/maintainability)
 <h2> Installation dependencies </h2> <br />
 1. Node <br />
 2. Java Development Kit (JDK) <br />
