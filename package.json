@@ -53,7 +53,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,scss}": [
+    "*.{js,jsx,css}": [
       "pretty-quick --staged",
       "eslint . --fix"
     ]
