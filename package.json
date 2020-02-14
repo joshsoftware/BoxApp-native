@@ -55,8 +55,7 @@
   "lint-staged": {
     "*.{js,jsx,scss}": [
       "pretty-quick --staged",
-      "eslint . --fix",
-      "git add"
+      "eslint . --fix"
     ]
   },
   "jest": {
