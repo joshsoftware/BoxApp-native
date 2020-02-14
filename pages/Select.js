@@ -15,7 +15,6 @@ const Select = props => {
         round
         onPress={() => navigation.navigate('Opponents')}
         style={styles.submitButton}>
-        {' '}
         Show Opponents
       </Button>
     </View>
