@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,14 +7,14 @@ import {
   BackHandler,
   Alert,
 } from 'react-native';
-import {Button} from 'galio-framework';
+import { Button } from 'galio-framework';
 import Mycard from './MyCard';
 import ApiHelper from './ApiHelper';
 import AsyncStorage from '@react-native-community/async-storage';
-import {getToken} from '../components/TokenManager';
+import { getToken } from '../components/TokenManager';
 
 const Opponents = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   const [fetchOpponents, setFetchOpponents] = useState(false);
   const [noOfPlayersRemainingText, setNoOfPlayersRemainingText] = useState('');
@@ -37,7 +37,7 @@ const Opponents = props => {
       return true;
     });
 
-    ApiHelper('list_opponents', null, {}, 'GET', {'user-auth-token': token})
+    ApiHelper('list_opponents', null, {}, 'GET', { 'user-auth-token': token })
       .then(responseJson => {
         setFetchOpponents(true);
         setDataSource(responseJson.opponents);

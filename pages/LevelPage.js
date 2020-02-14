@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Alert} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import Grid from './Grid';
 import ApiHelper from './ApiHelper';
 
 const LevelPage = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   let level = 0;
   const sport_id = JSON.stringify(navigation.getParam('sport'));
@@ -14,7 +14,7 @@ const LevelPage = props => {
   useEffect(() => {
     ApiHelper(
       'city_sport_levels',
-      JSON.stringify({sport_id: sport_id}),
+      JSON.stringify({ sport_id: sport_id }),
       {},
       'POST',
       {
@@ -38,11 +38,11 @@ const LevelPage = props => {
       }),
       {},
       'POST',
-      {'user-auth-token': token},
+      { 'user-auth-token': token },
     )
       .then(responseJson => {
         Alert.alert('Sports and level status', responseJson.message);
-        navigation.navigate('Opponents', {token: token});
+        navigation.navigate('Opponents', { token: token });
       })
       .catch(err => {
         Alert.alert(

@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
-import {Button, Text} from 'galio-framework';
-import {CustomInputPassword} from '../components/CustomInput';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Alert } from 'react-native';
+import { Button, Text } from 'galio-framework';
+import { CustomInputPassword } from '../components/CustomInput';
 import {
   validateSetPassword,
   showAlertForInvalidInput,
 } from '../components/Validation';
-import {setToken} from '../components/TokenManager';
+import { setToken } from '../components/TokenManager';
 import ApiHelper from './ApiHelper';
 
 const SetPasswordPage = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
   let confirmationToken;
@@ -20,7 +20,7 @@ const SetPasswordPage = props => {
   });
 
   const handleInput = (value, name) => {
-    setUser({...user, [name]: value});
+    setUser({ ...user, [name]: value });
   };
 
   const setPasswordForUser = () => {
@@ -42,7 +42,7 @@ const SetPasswordPage = props => {
         } else {
           setToken('setPasswordToken', responseJson);
           Alert.alert('Successful', 'Password has been set successfully..');
-          navigation.navigate('Sports', {token: responseJson});
+          navigation.navigate('Sports', { token: responseJson });
         }
       })
       .catch(err => {

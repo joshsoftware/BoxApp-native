@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, View, Text, ScrollView, Image} from 'react-native';
-import {Button} from 'galio-framework';
+import { StyleSheet, View, Text, ScrollView, Image } from 'react-native';
+import { Button } from 'galio-framework';
 
 const IntroPage = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   return (
     <ScrollView style={styles.body}>
       <View style={styles.header}>

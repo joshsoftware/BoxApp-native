@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,8 +7,8 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import {Button, Text} from 'galio-framework';
-import {CustomInputText, CustomInputNumber} from '../components/CustomInput';
+import { Button, Text } from 'galio-framework';
+import { CustomInputText, CustomInputNumber } from '../components/CustomInput';
 import {
   validateSignUp,
   showAlertForInvalidInput,
@@ -16,7 +16,7 @@ import {
 import ApiHelper from './ApiHelper';
 
 const SignUpPage = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ const SignUpPage = props => {
   const [errors, setErrors] = useState({});
 
   const handleInput = (value, name) => {
-    setUser({...user, [name]: value});
+    setUser({ ...user, [name]: value });
   };
 
   const addUser = () => {

@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button} from 'galio-framework';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button } from 'galio-framework';
 import Opponets from './Opponents';
 
 const Select = props => {
-  const {navigation} = props;
+  const { navigation } = props;
 
   return (
     <View style={styles.bodyContainer}>

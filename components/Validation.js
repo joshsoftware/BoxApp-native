@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import GLOBAL from './GlobalConstants';
 
 const errorMessages = {
@@ -14,7 +14,7 @@ const errorMessages = {
 
 //Function to validate the inputs of sign up page and return errors if any
 const validateSignUp = user => {
-  const {firstName, lastName, contactNumber, emailId} = user;
+  const { firstName, lastName, contactNumber, emailId } = user;
   return {
     firstName: validateName(firstName) ? '' : errorMessages.firstName,
     lastName: validateName(lastName) ? '' : errorMessages.lastName,
@@ -28,7 +28,7 @@ const validateSignUp = user => {
 
 //Function to validate the inputs of sign in page and return errors if any
 const validateSignIn = user => {
-  const {emailId, password} = user;
+  const { emailId, password } = user;
   return {
     emailId: validateEmailId(emailId) ? '' : errorMessages.emailId,
     password: password ? '' : errorMessages.emptyInput,
@@ -37,7 +37,7 @@ const validateSignIn = user => {
 
 //Function to validate the inputs of set password page and return errors if any
 const validateSetPassword = user => {
-  const {password, confirmPassword} = user;
+  const { password, confirmPassword } = user;
   return {
     password: validatePassword(password) ? '' : errorMessages.password,
     confirmPassword: validateConfirmPassword(password, confirmPassword)

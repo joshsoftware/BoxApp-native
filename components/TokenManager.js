@@ -20,4 +20,4 @@ const getToken = async tokenName => {
   }
 };
 
-export {setToken, getToken};
+export { setToken, getToken };

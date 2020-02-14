@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input} from 'galio-framework';
+import { Input } from 'galio-framework';
 
 const CustomInputText = props => {
   const {
@@ -73,4 +73,4 @@ const CustomInputPassword = props => {
   );
 };
 
-export {CustomInputText, CustomInputNumber, CustomInputPassword};
+export { CustomInputText, CustomInputNumber, CustomInputPassword };

@@ -1,22 +1,25 @@
-import React, {useState} from 'react';
-import {StyleSheet, ScrollView, Alert} from 'react-native';
-import {Button, Text} from 'galio-framework';
-import {CustomInputText, CustomInputPassword} from '../components/CustomInput';
+import React, { useState } from 'react';
+import { StyleSheet, ScrollView, Alert } from 'react-native';
+import { Button, Text } from 'galio-framework';
+import {
+  CustomInputText,
+  CustomInputPassword,
+} from '../components/CustomInput';
 import {
   validateSignIn,
   showAlertForInvalidInput,
 } from '../components/Validation';
-import {setToken} from '../components/TokenManager';
+import { setToken } from '../components/TokenManager';
 import ApiHelper from './ApiHelper';
 
 //Component to manage the Sign in page
 const SignInPage = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
 
   const handleInput = (value, name) => {
-    setUser({...user, [name]: value});
+    setUser({ ...user, [name]: value });
   };
 
   const signIn = () => {
@@ -37,7 +40,7 @@ const SignInPage = props => {
           );
         } else {
           setToken('signInToken', responseJson);
-          navigation.navigate('Opponents', {token: responseJson.token});
+          navigation.navigate('Opponents', { token: responseJson.token });
         }
       })
       .catch(error => {

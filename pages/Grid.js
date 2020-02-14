@@ -1,9 +1,9 @@
 import React from 'react';
-import {FlatGrid} from 'react-native-super-grid';
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import { FlatGrid } from 'react-native-super-grid';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 const Grid = props => {
-  const {items, setLevelChange} = props;
+  const { items, setLevelChange } = props;
 
   const checkUnavailability = freeSlotCount => {
     if (freeSlotCount === 0) {
@@ -16,7 +16,7 @@ const Grid = props => {
     <FlatGrid
       itemDimension={145}
       items={items}
-      renderItem={({item, index}) => (
+      renderItem={({ item, index }) => (
         <TouchableOpacity
           onPress={() => setLevelChange(item.id, item.name, item.free_slots)}>
           <View

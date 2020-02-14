@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, BackHandler, Alert} from 'react-native';
-import {Text} from 'galio-framework';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, BackHandler, Alert } from 'react-native';
+import { Text } from 'galio-framework';
 import Grid from './Grid';
 import ApiHelper from './ApiHelper';
 
 const CitySports = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   const tokenObject = navigation.getParam('token');
 
