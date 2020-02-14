@@ -2,13 +2,6 @@
   "name": "BoxAppNative",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
-  },
   "dependencies": {
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/masked-view": "^0.1.6",
@@ -41,18 +34,33 @@
     "prettier": "^1.19.1",
     "react-test-renderer": "16.9.0"
   },
-  "jest": {
-    "preset": "react-native"
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "eslintIgnore": [
+    "src/serviceWorker.js",
+    "cypress/"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
-    "./src/*.{js,jsx,ts,tsx}": [
-      "npx prettier --write",
-      "eslint src/*.js --fix-dry-run"
+    "*.{js,jsx,scss}": [
+      "pretty-quick --staged",
+      "eslint . --fix",
+      "git add"
     ]
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }
