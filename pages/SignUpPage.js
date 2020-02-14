@@ -2,12 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-  Picker,
   ScrollView,
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import {Button, Input, Text, Toast, theme} from 'galio-framework';
+import {Button, Text} from 'galio-framework';
 import {CustomInputText, CustomInputNumber} from '../components/CustomInput';
 import RNPickerSelect from 'react-native-picker-select';
 import {
@@ -15,7 +14,6 @@ import {
   showAlertForInvalidInput,
 } from '../components/Validation';
 import ApiHelper from './ApiHelper';
-import {DarkTheme} from 'react-native-paper';
 
 const SignUpPage = props => {
   let cities = [];
@@ -158,21 +156,12 @@ const SignUpPage = props => {
             handleInputChange={handleInput}
             borderStyle={errors.emailId ? styles.error : styles.textInputBorder}
           />
-          {/* <Picker
-            mode={'dropdown'}
-            selectedValue={pickerValue}
-            style={styles.cityDropDown}
-            onValueChange={pickerHandler}>
-            {datasource.map((item, key) => (
-              <Picker.Item label={item.name} value={item.id} key={key} />
-            ))}
-          </Picker> */}
 
           <RNPickerSelect
-            placeholder={{label: 'select city', value: null}}
+            placeholder={{label: 'Select City', value: null}}
             onValueChange={pickerHandler}
             items={cities}
-            style={styles.dropDown}
+            style={pickerSelectStyles}
           />
 
           <Button
@@ -203,7 +192,6 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flex: 1,
     padding: '10%',
-    // backgroundColor: 'white',
     backgroundColor: '#041530',
   },
 
@@ -258,15 +246,24 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  dropdown: {
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputAndroid: {
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'white',
-    borderRadius: 8,
-    color: 'white',
+    borderWidth: 2,
+    borderColor: 'red',
+    borderRadius: 10,
+    color: 'black',
     paddingRight: 30,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    width: '95%',
+    height: 45,
+    margin: 10,
+    overflow: 'hidden',
   },
 });
 
