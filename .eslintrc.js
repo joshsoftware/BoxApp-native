@@ -14,6 +14,10 @@ module.exports = {
     'import/newline-after-import': 'error',
     'no-trailing-spaces': 'error',
     'no-whitespace-before-property': 'error',
+    'no-use-before-define': 0,
+    'no-unused-expressions': 0,
+    'no-unused-vars': 0,
+    'react/no-array-index-key': 0,
   },
   globals: {
     window: true,

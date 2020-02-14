@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -8,9 +9,9 @@ import {
   Alert,
 } from 'react-native';
 import { Button } from 'galio-framework';
+import AsyncStorage from '@react-native-community/async-storage';
 import Mycard from './MyCard';
 import ApiHelper from './ApiHelper';
-import AsyncStorage from '@react-native-community/async-storage';
 import { getToken } from '../components/TokenManager';
 
 const Opponents = props => {
@@ -41,7 +42,7 @@ const Opponents = props => {
       .then(responseJson => {
         setFetchOpponents(true);
         setDataSource(responseJson.opponents);
-        let remainingText = responseJson.free_slots + ' more player';
+        let remainingText = `${responseJson.free_slots  } more player`;
         if (responseJson.free_slots > 1) {
           remainingText += 's';
         }
@@ -56,12 +57,11 @@ const Opponents = props => {
   }, []);
 
   const signOut = () => {
-    console.log(getToken('signInToken'));
     AsyncStorage.clear();
     navigation.navigate('Intro');
   };
 
-  let count = Object.keys(datasource).length;
+  const count = Object.keys(datasource).length;
   return (
     <View style={styles.bodyContainer}>
       <View style={styles.buttonsContainer}>
@@ -82,7 +82,7 @@ const Opponents = props => {
               <ScrollView>
                 <Mycard
                   key={user.id}
-                  name={user.first_name + ' ' + user.last_name}
+                  name={`${user.first_name  } ${  user.last_name}`}
                   number={user.contact_number}
                 />
               </ScrollView>

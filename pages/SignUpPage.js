@@ -21,7 +21,7 @@ const SignUpPage = props => {
   const [pickerValue, setPickerValue] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  //Initializing user fields
+  // Initializing user fields
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -53,7 +53,7 @@ const SignUpPage = props => {
           Alert.alert('Registration status', responseJson.message);
         }
       })
-      .catch(error => {
+      .catch(() => {
         Alert.alert(
           'Server error',
           'An unexpected error has occured, cannot process further registration..',
@@ -106,10 +106,10 @@ const SignUpPage = props => {
   };
 
   return (
-    <ScrollView style={styles.bodyContainer} centerContent={true}>
+    <ScrollView style={styles.bodyContainer} centerContent>
       {isLoading ? (
         <View styles={styles.loaderContainer}>
-          <ActivityIndicator size={'large'} color={'white'} />
+          <ActivityIndicator size="large" color="white" />
         </View>
       ) : (
         <>
@@ -156,7 +156,7 @@ const SignUpPage = props => {
           />
 
           <Picker
-            mode={'dropdown'}
+            mode="dropdown"
             selectedValue={pickerValue}
             style={styles.cityDropDown}
             onValueChange={pickerHandler}>
