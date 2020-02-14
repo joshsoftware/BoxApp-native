@@ -52,14 +52,6 @@ const LevelPage = props => {
       });
   };
 
-  const Check = () => {
-    if (level == 0) {
-      alert('Please Select Level');
-    } else {
-      addLevel();
-    }
-  };
-
   const setLevel = (id, name, free_slots) => {
     if (free_slots === 0) {
       Alert.alert('SORRY!', 'This box is full. Please select another box.');

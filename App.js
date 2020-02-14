@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import IntroPage from './pages/IntroPage';
 import SignUpPage from './pages/SignUpPage';
 import SetPasswordPage from './pages/SetPasswordPage';
@@ -75,19 +75,14 @@ const RootStack = createStackNavigator({
     },
     path: 'opponents',
   },
+
+  initialRouteName: 'Intro',
 });
 
 const AppContainer = createAppContainer(RootStack);
 
 const App = () => {
   const prefix = 'app://boxapp';
-
-  //Fetch token of user if available and navigate accordingly
-  const fetchToken = async () => {
-    const storedToken = await getToken('signInToken');
-    console.log(storedToken);
-    return storedToken;
-  };
 
   return <AppContainer uriPrefix={prefix} />;
 };

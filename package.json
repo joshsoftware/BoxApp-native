@@ -32,12 +32,27 @@
     "@babel/runtime": "7.8.3",
     "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "24.9.0",
-    "eslint": "6.8.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "husky": "^4.2.3",
     "jest": "24.9.0",
+    "lint-staged": "^10.0.7",
     "metro-react-native-babel-preset": "0.56.4",
+    "prettier": "^1.19.1",
     "react-test-renderer": "16.9.0"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/*.{js,jsx,ts,tsx}": [
+      "npx prettier --write",
+      "eslint src/*.js --fix-dry-run"
+    ]
   }
 }
