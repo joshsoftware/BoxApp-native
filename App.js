@@ -7,9 +7,9 @@ import Opponents from './pages/Opponents';
 import Select from './pages/Select';
 import LevelPage from './pages/LevelPage';
 import CitySports from './pages/CitySports';
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import {getToken} from './components/TokenManager';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { getToken } from './components/TokenManager';
 
 const RootStack = createStackNavigator({
   Intro: {
