@@ -60,7 +60,7 @@ const CustomInputPassword = props => {
   return (
     <Input
       placeholder={placeholder}
-      secureTextEntry={true}
+      secureTextEntry
       name={name}
       defaultValue={defaultValue}
       onChangeText={text => {

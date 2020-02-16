@@ -42,7 +42,7 @@ const Opponents = props => {
       .then(responseJson => {
         setFetchOpponents(true);
         setDataSource(responseJson.opponents);
-        let remainingText = `${responseJson.free_slots  } more player`;
+        let remainingText = `${responseJson.free_slots} more player`;
         if (responseJson.free_slots > 1) {
           remainingText += 's';
         }
@@ -82,7 +82,7 @@ const Opponents = props => {
               <ScrollView>
                 <Mycard
                   key={user.id}
-                  name={`${user.first_name  } ${  user.last_name}`}
+                  name={`${user.first_name} ${user.last_name}`}
                   number={user.contact_number}
                 />
               </ScrollView>
