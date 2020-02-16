@@ -3,6 +3,7 @@ import { View, Image } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 
 export default function Mycard(props) {
+  const { name, number } = props;
   return (
     <View style={{ margin: 5 }}>
       <Card style={{ elevation: 5 }}>
@@ -18,8 +19,8 @@ export default function Mycard(props) {
           </View>
           <View>
             <Card.Content>
-              <Title>{props.name}</Title>
-              <Paragraph>Contact number: {props.number}</Paragraph>
+              <Title>{name}</Title>
+              <Paragraph>Contact number: {number}</Paragraph>
             </Card.Content>
           </View>
         </View>

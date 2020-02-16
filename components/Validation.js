@@ -12,7 +12,7 @@ const errorMessages = {
   cityId: 'Please select a city',
 };
 
-//Function to validate the inputs of sign up page and return errors if any
+// Function to validate the inputs of sign up page and return errors if any
 const validateSignUp = user => {
   const { firstName, lastName, contactNumber, emailId } = user;
   return {
@@ -26,7 +26,7 @@ const validateSignUp = user => {
   };
 };
 
-//Function to validate the inputs of sign in page and return errors if any
+// Function to validate the inputs of sign in page and return errors if any
 const validateSignIn = user => {
   const { emailId, password } = user;
   return {
@@ -35,7 +35,7 @@ const validateSignIn = user => {
   };
 };
 
-//Function to validate the inputs of set password page and return errors if any
+// Function to validate the inputs of set password page and return errors if any
 const validateSetPassword = user => {
   const { password, confirmPassword } = user;
   return {
@@ -55,7 +55,7 @@ const validateName = inputName => {
   return false;
 };
 
-//Used for the validation of contact number, it must consist of 10 digits
+// Used for the validation of contact number, it must consist of 10 digits
 const validateNumber = inputNumber => {
   const numberRegex = GLOBAL.regexForContactNumber;
   if (inputNumber) {
@@ -64,7 +64,7 @@ const validateNumber = inputNumber => {
   return false;
 };
 
-//Used to validate the email address provided by user
+// Used to validate the email address provided by user
 const validateEmailId = inputEmailId => {
   const emailRegex = GLOBAL.regexForEmail;
   if (inputEmailId) {
@@ -73,7 +73,7 @@ const validateEmailId = inputEmailId => {
   return false;
 };
 
-//Used to validate the password which should consist of atleast 6 characters
+// Used to validate the password which should consist of atleast 6 characters
 const validatePassword = inputPassword => {
   if (inputPassword) {
     return inputPassword.length >= 6;
@@ -81,12 +81,12 @@ const validatePassword = inputPassword => {
   return false;
 };
 
-//Input for city is taken from dropdown so always returns true
+// Input for city is taken from dropdown so always returns true
 const validateCity = () => {
   return true;
 };
 
-//To check if the input password and the confirm password is matching
+// To check if the input password and the confirm password is matching
 const validateConfirmPassword = (inputPassword, inputConfirmPassword) => {
   return inputPassword === inputConfirmPassword;
 };
@@ -97,14 +97,14 @@ const validateConfirmPassword = (inputPassword, inputConfirmPassword) => {
   "Please enter a valid email address"
 */
 const showAlertForInvalidInput = (object, errors) => {
-  let errorString = '',
-    i;
-  let objectKeys = Object.keys(errors);
+  let errorString = '';
+  let i;
+  const objectKeys = Object.keys(errors);
 
   if (objectKeys.length < 1) {
     errorString += errorMessages.emptyInput;
   } else if (objectKeys.length >= 1) {
-    for (i in objectKeys) {
+    for (i = 0; i < objectKeys; i += 1) {
       errorString += errors[objectKeys[i]];
       if (errors[objectKeys[i]]) {
         break;

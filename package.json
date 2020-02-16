@@ -58,6 +58,7 @@
   "lint-staged": {
     "*.{js,jsx}": [
       "yarn run prettier",
+      "pretty-quick --staged",
       "eslint --fix"
     ]
   },

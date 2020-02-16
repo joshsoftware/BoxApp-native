@@ -12,7 +12,7 @@ import {
 import { setToken } from '../components/TokenManager';
 import ApiHelper from './ApiHelper';
 
-//Component to manage the Sign in page
+// Component to manage the Sign in page
 const SignInPage = props => {
   const { navigation } = props;
   const [user, setUser] = useState({});
@@ -70,7 +70,7 @@ const SignInPage = props => {
   };
 
   return (
-    <ScrollView style={styles.bodyContainer} centerContent={true}>
+    <ScrollView style={styles.bodyContainer} centerContent>
       <Text h4 style={styles.signInLabel}>
         Sign In
       </Text>

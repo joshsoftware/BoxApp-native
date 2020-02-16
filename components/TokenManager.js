@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-//Function used to save the token with given token name in async storage
+// Function used to save the token with given token name in async storage
 const setToken = async (tokenName, tokenObject) => {
   try {
     await AsyncStorage.setItem(tokenName, JSON.stringify(tokenObject));
@@ -9,7 +9,7 @@ const setToken = async (tokenName, tokenObject) => {
   }
 };
 
-//Function to extract the token with given name from async storage
+// Function to extract the token with given name from async storage
 const getToken = async tokenName => {
   try {
     const tokenObject = await AsyncStorage.getItem(tokenName);
@@ -17,6 +17,7 @@ const getToken = async tokenName => {
     return tokenParsed;
   } catch (error) {
     console.log(error);
+    return -1;
   }
 };
 

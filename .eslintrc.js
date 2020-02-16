@@ -19,6 +19,8 @@ module.exports = {
     'no-unused-vars': 0,
     'react/no-array-index-key': 0,
     'import/no-extraneous-dependencies': 0,
+    'no-shadow': 0,
+    'global-require': 0,
   },
   globals: {
     window: true,

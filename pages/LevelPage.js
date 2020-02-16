@@ -7,14 +7,14 @@ const LevelPage = props => {
   const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   let level = 0;
-  const sport_id = JSON.stringify(navigation.getParam('sport'));
-  const sport_name = JSON.stringify(navigation.getParam('sportname'));
+  const sportId = JSON.stringify(navigation.getParam('sport'));
+  const sportName = JSON.stringify(navigation.getParam('sportname'));
   const token = navigation.getParam('token');
 
   useEffect(() => {
     ApiHelper(
       'city_sport_levels',
-      JSON.stringify({ sport_id: sport_id }),
+      JSON.stringify({ sport_id: sportId }),
       {},
       'POST',
       {
@@ -42,7 +42,7 @@ const LevelPage = props => {
     )
       .then(responseJson => {
         Alert.alert('Sports and level status', responseJson.message);
-        navigation.navigate('Opponents', { token: token });
+        navigation.navigate('Opponents', { token });
       })
       .catch(err => {
         Alert.alert(
@@ -52,13 +52,13 @@ const LevelPage = props => {
       });
   };
 
-  const setLevel = (id, name, free_slots) => {
-    if (free_slots === 0) {
+  const setLevel = (id, name, freeSlots) => {
+    if (freeSlots === 0) {
       Alert.alert('SORRY!', 'This box is full. Please select another box.');
       return;
     }
     Alert.alert(
-      'Level ' + name + ' selected',
+      `Level ${name} selected`,
       'Are you sure you want to select this level?',
       [
         {
@@ -67,7 +67,7 @@ const LevelPage = props => {
         },
         {
           text: 'OK',
-          onPress: () => addLevel(token, sport_id, level),
+          onPress: () => addLevel(token, sportId, level),
         },
       ],
     );
@@ -80,9 +80,8 @@ const LevelPage = props => {
         <Grid items={datasource} setLevelChange={setLevel} />
       </View>
     );
-  } else {
-    return <Text>Loading.....</Text>;
   }
+  return <Text>Loading.....</Text>;
 };
 
 const styles = StyleSheet.create({

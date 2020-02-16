@@ -44,8 +44,8 @@ const CitySports = props => {
   }, [tokenObject]);
 
   const onSelect = (number, name) => {
-    let sportId = number;
-    let sportName = name;
+    const sportId = number;
+    const sportName = name;
     navigation.navigate('Level', {
       sport: sportId,
       sportname: sportName,
@@ -59,9 +59,8 @@ const CitySports = props => {
         <Grid items={datasource} setLevelChange={onSelect} />
       </View>
     );
-  } else {
-    return <Text>Loading.....</Text>;
   }
+  return <Text>Loading.....</Text>;
 };
 
 const styles = StyleSheet.create({
