@@ -1,114 +1,87 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import IntroPage from './pages/IntroPage';
+import SignUpPage from './pages/SignUpPage';
+import SetPasswordPage from './pages/SetPasswordPage';
+import SignInPage from './pages/SignInPage';
+import Opponents from './pages/Opponents';
+import LevelPage from './pages/LevelPage';
+import CitySports from './pages/CitySports';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const RootStack = createStackNavigator({
+  Intro: {
+    screen: IntroPage,
+    navigationOptions: {
+      headerShown: false,
+    },
+    path: 'intro',
+  },
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+  SignUp: {
+    screen: SignUpPage,
+    navigationOptions: {
+      headerTitle: 'Sign up',
+    },
+    path: 'signup',
+  },
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  SetPassword: {
+    screen: SetPasswordPage,
+    navigationOptions: {
+      headerTitle: 'Set Password',
+      headerLeft: () => {
+        null;
+      },
+    },
+    path: 'setpassword',
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+
+  SignIn: {
+    screen: SignInPage,
+    navigationOptions: {
+      headerTitle: 'Sign In',
+    },
+    path: 'signin',
   },
-  body: {
-    backgroundColor: Colors.white,
+
+  Level: {
+    screen: LevelPage,
+    navigationOptions: {
+      headerTitle: 'Select Level',
+    },
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+
+  Sports: {
+    screen: CitySports,
+    navigationOptions: {
+      headerTitle: 'Select Sport',
+      headerLeft: () => {
+        null;
+      },
+    },
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+
+  Opponents: {
+    screen: Opponents,
+    navigationOptions: {
+      headerTitle: 'Your Opponents',
+      headerLeft: () => {
+        null;
+      },
+    },
+    path: 'opponents',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+
+  initialRouteName: 'Intro',
 });
+
+const AppContainer = createAppContainer(RootStack);
+
+const App = () => {
+  const prefix = 'app://boxapp';
+
+  return <AppContainer uriPrefix={prefix} />;
+};
 
 export default App;
