@@ -18,14 +18,13 @@ const IntroPage = props => {
 
         <Text style={styles.tagline}>Level up your game..</Text>
       </View>
-
       <View style={styles.features}>
         <Image
           style={styles.coverImage}
           source={require('../images/cover.png')}
         />
       </View>
-
+      abc
       <View style={styles.buttonsContainer}>
         <View style={styles.button}>
           <Button
