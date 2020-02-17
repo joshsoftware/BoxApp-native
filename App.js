@@ -79,7 +79,7 @@ const RootStack = createStackNavigator({
 const AppContainer = createAppContainer(RootStack);
 
 const App = () => {
-  const prefix = 'app://boxapp';
+  const prefix = 'app://boxapp/';
 
   return <AppContainer uriPrefix={prefix} />;
 };

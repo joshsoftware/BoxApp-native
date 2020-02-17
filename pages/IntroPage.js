@@ -24,7 +24,6 @@ const IntroPage = props => {
           source={require('../images/cover.png')}
         />
       </View>
-      aaaaa
       <View style={styles.buttonsContainer}>
         <View style={styles.button}>
           <Button
