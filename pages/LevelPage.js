@@ -1,28 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  CheckBox,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import Grid from './Grid';
-import {NavigationEvents} from 'react-navigation';
 import ApiHelper from './ApiHelper';
 
 const LevelPage = props => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   let level = 0;
-  const sport_id = JSON.stringify(navigation.getParam('sport'));
-  const sport_name = JSON.stringify(navigation.getParam('sportname'));
+  const sportId = JSON.stringify(navigation.getParam('sport'));
+  const sportName = JSON.stringify(navigation.getParam('sportname'));
   const token = navigation.getParam('token');
 
   useEffect(() => {
     ApiHelper(
       'city_sport_levels',
-      JSON.stringify({sport_id: sport_id}),
+      JSON.stringify({ sport_id: sportId }),
       {},
       'POST',
       {
@@ -46,11 +38,11 @@ const LevelPage = props => {
       }),
       {},
       'POST',
-      {'user-auth-token': token},
+      { 'user-auth-token': token },
     )
       .then(responseJson => {
         Alert.alert('Sports and level status', responseJson.message);
-        navigation.navigate('Opponents', {token: token});
+        navigation.navigate('Opponents', { token });
       })
       .catch(err => {
         Alert.alert(
@@ -60,21 +52,13 @@ const LevelPage = props => {
       });
   };
 
-  const Check = () => {
-    if (level == 0) {
-      alert('Please Select Level');
-    } else {
-      addLevel();
-    }
-  };
-
-  const setLevel = (id, name, free_slots) => {
-    if (free_slots == 0) {
+  const setLevel = (id, name, freeSlots) => {
+    if (freeSlots === 0) {
       Alert.alert('SORRY!', 'This box is full. Please select another box.');
       return;
     }
     Alert.alert(
-      'Level ' + name + ' selected',
+      `Level ${name} selected`,
       'Are you sure you want to select this level?',
       [
         {
@@ -83,7 +67,7 @@ const LevelPage = props => {
         },
         {
           text: 'OK',
-          onPress: () => addLevel(token, sport_id, level),
+          onPress: () => addLevel(token, sportId, level),
         },
       ],
     );
@@ -96,15 +80,14 @@ const LevelPage = props => {
         <Grid items={datasource} setLevelChange={setLevel} />
       </View>
     );
-  } else {
-    return (
-      <View style={styles.levelsContainer}>
-        <Text style={styles.levels}>
-          Sorry, There are no levels available for this sport.
-        </Text>
-      </View>
-    );
   }
+  return (
+    <View style={styles.levelsContainer}>
+      <Text style={styles.levels}>
+        Sorry, There are no levels available for this sport.
+      </Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

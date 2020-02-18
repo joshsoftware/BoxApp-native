@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,9 +6,9 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import {Button, Text} from 'galio-framework';
-import {CustomInputText, CustomInputNumber} from '../components/CustomInput';
+import { Button, Text } from 'galio-framework';
 import RNPickerSelect from 'react-native-picker-select';
+import { CustomInputText, CustomInputNumber } from '../components/CustomInput';
 import {
   validateSignUp,
   showAlertForInvalidInput,
@@ -17,17 +17,17 @@ import ApiHelper from './ApiHelper';
 
 const SignUpPage = props => {
   let cities = [];
-  const {navigation} = props;
+  const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  //Initializing user fields
+  // Initializing user fields
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
 
   const handleInput = (value, name) => {
-    setUser({...user, [name]: value});
+    setUser({ ...user, [name]: value });
   };
 
   const addUser = () => {
@@ -52,10 +52,9 @@ const SignUpPage = props => {
           Alert.alert('Registration status', responseJson.error);
         } else {
           Alert.alert('Registration status', responseJson.message);
-          navigation.navigate('Intro');
         }
       })
-      .catch(error => {
+      .catch(() => {
         Alert.alert(
           'Server error',
           'An unexpected error has occured, cannot process further registration..',
@@ -102,26 +101,27 @@ const SignUpPage = props => {
       });
   }, []);
 
-  const pickerHandler = (item, key) => {
+  const pickerHandler = item => {
     setPickerValue(item);
     handleInput(item, 'cityId');
   };
 
-  datasource.map(function(obj, j) {
-    cities[j] = {label: obj.name, value: obj.id};
+  cities = datasource.map(obj => {
+    return { label: obj.name, value: obj.id };
   });
 
   return (
-    <ScrollView style={styles.bodyContainer} centerContent={true}>
+    <ScrollView style={styles.bodyContainer} centerContent>
       {isLoading ? (
         <View styles={styles.loaderContainer}>
-          <ActivityIndicator size={'large'} color={'white'} />
+          <ActivityIndicator size="large" color="white" />
         </View>
       ) : (
         <>
           <Text h4 style={styles.registerLabel}>
             Register here!
           </Text>
+
           <CustomInputText
             placeholder="First Name"
             name="firstName"
@@ -158,7 +158,7 @@ const SignUpPage = props => {
           />
 
           <RNPickerSelect
-            placeholder={{label: 'Select City', value: null}}
+            placeholder={{ label: 'Select City', value: null }}
             onValueChange={pickerHandler}
             items={cities}
             style={pickerSelectStyles}

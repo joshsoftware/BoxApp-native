@@ -1,4 +1,3 @@
-import React, {Component, useState, useEffect} from 'react';
 import qs from 'query-string';
 
 function getDefaultHeaders() {
@@ -17,7 +16,7 @@ export default function(
   headers = {},
 ) {
   let url = `${process.env.API_URL}/api/v1/${endpoint}`;
-  if (method == 'GET' && Object.keys(query_parameter).length > 0) {
+  if (method === 'GET' && Object.keys(query_parameter).length > 0) {
     url = `${url}?${qs.stringify(query_parameter)}`;
   }
 

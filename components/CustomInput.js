@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input} from 'galio-framework';
+import { Input } from 'galio-framework';
 
 const CustomInputText = props => {
   const {
@@ -58,7 +58,7 @@ const CustomInputPassword = props => {
   return (
     <Input
       placeholder={placeholder}
-      secureTextEntry={true}
+      secureTextEntry
       name={name}
       defaultValue={defaultValue}
       onChangeText={text => {
@@ -70,4 +70,4 @@ const CustomInputPassword = props => {
   );
 };
 
-export {CustomInputText, CustomInputNumber, CustomInputPassword};
+export { CustomInputText, CustomInputNumber, CustomInputPassword };
