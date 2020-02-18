@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import { Button, Text } from 'galio-framework';
 import RNPickerSelect from 'react-native-picker-select';
-import { CustomInputText, CustomInputNumber } from '../components/CustomInput';
+import CustomInput from '../components/CustomInput';
+
 import {
   validateSignUp,
   showAlertForInvalidInput,
@@ -78,7 +79,7 @@ const SignUpPage = props => {
     if (noErrorsPresent(validationErrors)) {
       addUser();
     } else {
-      showAlertForInvalidInput(user, validationErrors);
+      showAlertForInvalidInput(validationErrors);
     }
   };
 
@@ -122,7 +123,7 @@ const SignUpPage = props => {
             Register here!
           </Text>
 
-          <CustomInputText
+          <CustomInput
             placeholder="First Name"
             name="firstName"
             defaultValue={user.firstName}
@@ -131,7 +132,8 @@ const SignUpPage = props => {
               errors.firstName ? styles.error : styles.textInputBorder
             }
           />
-          <CustomInputText
+
+          <CustomInput
             placeholder="Last Name"
             name="lastName"
             defaultValue={user.lastName}
@@ -140,16 +142,20 @@ const SignUpPage = props => {
               errors.lastName ? styles.error : styles.textInputBorder
             }
           />
-          <CustomInputNumber
+
+          <CustomInput
             placeholder="Contact Number"
             name="contactNumber"
             defaultValue={user.contactNumber}
             handleInputChange={handleInput}
+            keyboardType="number-pad"
+            maxLength={10}
             borderStyle={
               errors.contactNumber ? styles.error : styles.textInputBorder
             }
           />
-          <CustomInputText
+
+          <CustomInput
             placeholder="Email ID"
             name="emailId"
             defaultValue={user.emailId}
