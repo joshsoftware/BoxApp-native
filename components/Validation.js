@@ -1,3 +1,4 @@
+import compact from 'lodash/compact';
 import { Alert } from 'react-native';
 import GLOBAL from './GlobalConstants';
 
@@ -96,20 +97,15 @@ const validateConfirmPassword = (inputPassword, inputConfirmPassword) => {
   "Please enter valid contact number"
   "Please enter a valid email address"
 */
-const showAlertForInvalidInput = (object, errors) => {
-  let errorString = '';
-  let i;
+const showAlertForInvalidInput = errors => {
+  let errorString;
   const objectKeys = Object.keys(errors);
+  const errorMessages = Object.values(errors);
 
   if (objectKeys.length < 1) {
-    errorString += errorMessages.emptyInput;
+    errorString = errorMessages.emptyInput;
   } else if (objectKeys.length >= 1) {
-    for (i = 0; i < objectKeys; i += 1) {
-      errorString += errors[objectKeys[i]];
-      if (errors[objectKeys[i]]) {
-        break;
-      }
-    }
+    [errorString] = compact(errorMessages);
   }
   Alert.alert('Invalid input', errorString);
 };

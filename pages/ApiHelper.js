@@ -19,7 +19,6 @@ export default function(
   if (method === 'GET' && Object.keys(query_parameter).length > 0) {
     url = `${url}?${qs.stringify(query_parameter)}`;
   }
-
   return fetch(url, {
     method,
     headers: {

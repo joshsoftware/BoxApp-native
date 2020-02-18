@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { Button, Text } from 'galio-framework';
-import { CustomInputPassword } from '../components/CustomInput';
+import CustomInput from '../components/CustomInput';
 import {
   validateSetPassword,
   showAlertForInvalidInput,
@@ -72,7 +72,7 @@ const SetPasswordPage = props => {
     if (noErrorsPresent(validationErrors)) {
       setPasswordForUser();
     } else {
-      showAlertForInvalidInput(user, validationErrors);
+      showAlertForInvalidInput(validationErrors);
     }
   };
 
@@ -82,19 +82,21 @@ const SetPasswordPage = props => {
         Set password here
       </Text>
 
-      <CustomInputPassword
+      <CustomInput
         placeholder="Password"
         name="password"
         defaultValue={user.password}
         handleInputChange={handleInput}
+        secureTextEntry
         borderStyle={errors.password ? styles.error : styles.textInputBorder}
       />
 
-      <CustomInputPassword
+      <CustomInput
         placeholder="Confirm Password"
         name="confirmPassword"
         defaultValue={user.confirmPassword}
         handleInputChange={handleInput}
+        secureTextEntry
         borderStyle={
           errors.confirmPassword ? styles.error : styles.textInputBorder
         }

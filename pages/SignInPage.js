@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Alert } from 'react-native';
 import { Button, Text } from 'galio-framework';
-import {
-  CustomInputText,
-  CustomInputPassword,
-} from '../components/CustomInput';
+import CustomInput from '../components/CustomInput';
 import {
   validateSignIn,
   showAlertForInvalidInput,
@@ -65,7 +62,7 @@ const SignInPage = props => {
     if (noErrorsPresent(validationErrors)) {
       signIn();
     } else {
-      showAlertForInvalidInput(user, validationErrors);
+      showAlertForInvalidInput(validationErrors);
     }
   };
 
@@ -75,7 +72,7 @@ const SignInPage = props => {
         Sign In
       </Text>
 
-      <CustomInputText
+      <CustomInput
         placeholder="Email ID"
         name="emailId"
         defaultValue={user.emailId}
@@ -83,11 +80,12 @@ const SignInPage = props => {
         borderStyle={errors.emailId ? styles.error : styles.textInputBorder}
       />
 
-      <CustomInputPassword
+      <CustomInput
         placeholder="Password"
         name="password"
         defaultValue={user.password}
         handleInputChange={handleInput}
+        secureTextEntry
         borderStyle={errors.password ? styles.error : styles.textInputBorder}
       />
 

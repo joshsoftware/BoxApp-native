@@ -5,8 +5,9 @@ const setToken = async (tokenName, tokenObject) => {
   try {
     await AsyncStorage.setItem(tokenName, JSON.stringify(tokenObject));
   } catch (error) {
-    console.log(error);
+    return error;
   }
+  return true;
 };
 
 // Function to extract the token with given name from async storage
@@ -16,8 +17,7 @@ const getToken = async tokenName => {
     const tokenParsed = JSON.parse(tokenObject);
     return tokenParsed;
   } catch (error) {
-    console.log(error);
-    return -1;
+    return error;
   }
 };
 
