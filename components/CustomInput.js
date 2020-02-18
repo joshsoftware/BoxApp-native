@@ -12,7 +12,6 @@ const CustomInput = props => {
     maxLength,
     secureTextEntry,
   } = props;
-
   return (
     <Input
       placeholder={placeholder}
@@ -26,7 +25,6 @@ const CustomInput = props => {
       }}
       style={borderStyle}
       color="black"
-      rounded
     />
   );
 };

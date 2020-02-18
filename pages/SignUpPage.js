@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
-  Picker,
   ScrollView,
   Alert,
   ActivityIndicator,
 } from 'react-native';
 import { Button, Text } from 'galio-framework';
+import RNPickerSelect from 'react-native-picker-select';
 import CustomInput from '../components/CustomInput';
+
 import {
   validateSignUp,
   showAlertForInvalidInput,
@@ -16,6 +17,7 @@ import {
 import ApiHelper from './ApiHelper';
 
 const SignUpPage = props => {
+  let cities = [];
   const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   const [pickerValue, setPickerValue] = useState(0);
@@ -100,10 +102,14 @@ const SignUpPage = props => {
       });
   }, []);
 
-  const pickerHandler = (item, key) => {
+  const pickerHandler = item => {
     setPickerValue(item);
     handleInput(item, 'cityId');
   };
+
+  cities = datasource.map(obj => {
+    return { label: obj.name, value: obj.id };
+  });
 
   return (
     <ScrollView style={styles.bodyContainer} centerContent>
@@ -157,15 +163,12 @@ const SignUpPage = props => {
             borderStyle={errors.emailId ? styles.error : styles.textInputBorder}
           />
 
-          <Picker
-            mode="dropdown"
-            selectedValue={pickerValue}
-            style={styles.cityDropDown}
-            onValueChange={pickerHandler}>
-            {datasource.map((item, key) => (
-              <Picker.Item label={item.name} value={item.id} key={key} />
-            ))}
-          </Picker>
+          <RNPickerSelect
+            placeholder={{ label: 'Select City', value: null }}
+            onValueChange={pickerHandler}
+            items={cities}
+            style={pickerSelectStyles}
+          />
 
           <Button
             color="info"
@@ -176,7 +179,6 @@ const SignUpPage = props => {
             style={styles.submitButton}>
             Register
           </Button>
-
           <Button
             color="error"
             size="small"
@@ -249,6 +251,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 2,
+    borderColor: 'red',
+    borderRadius: 10,
+    color: 'black',
+    paddingRight: 30,
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    width: '95%',
+    height: 45,
+    margin: 10,
+    overflow: 'hidden',
   },
 });
 

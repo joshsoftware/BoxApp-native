@@ -76,12 +76,18 @@ const LevelPage = props => {
 
   if (datasource.length > 0) {
     return (
-      <View style={styles.bodyContainer}>
+      <View styles={styles.bodyContainer}>
         <Grid items={datasource} setLevelChange={setLevel} />
       </View>
     );
   }
-  return <Text>Loading.....</Text>;
+  return (
+    <View style={styles.levelsContainer}>
+      <Text style={styles.levels}>
+        Sorry, There are no levels available for this sport.
+      </Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -109,6 +115,16 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     margin: 10,
+  },
+  levels: {
+    textAlign: 'center',
+    fontSize: 30,
+    color: 'white',
+  },
+  levelsContainer: {
+    flex: 1,
+    padding: '10%',
+    backgroundColor: '#041530',
   },
 });
 
