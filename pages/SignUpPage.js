@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Button, Text } from 'galio-framework';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomInput from '../components/CustomInput';
 import {
   validateSignUp,
@@ -24,6 +25,9 @@ const SignUpPage = props => {
   // Initializing user fields
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
+  const cityList = useSelector(state => state.apiReducer);
 
   const handleInput = (value, name) => {
     setUser({ ...user, [name]: value });
@@ -82,22 +86,24 @@ const SignUpPage = props => {
   };
 
   useEffect(() => {
-    ApiHelper('cities')
-      .then(responseJson => {
-        setDataSource(responseJson);
-      })
-      .catch(error => {
-        Alert.alert(
-          'Server error',
-          'An unexpected error has occured, unable to fetch cities..',
-          [
-            {
-              text: 'OK',
-              onPress: () => navigation.navigate('Intro'),
-            },
-          ],
-        );
-      });
+    console.log('In use effect');
+    dispatch({ type: 'Fetch_Data' });
+    // ApiHelper('cities')
+    //   .then(responseJson => {
+    //     setDataSource(responseJson);
+    //   })
+    //   .catch(error => {
+    //     Alert.alert(
+    //       'Server error',
+    //       'An unexpected error has occured, unable to fetch cities..',
+    //       [
+    //         {
+    //           text: 'OK',
+    //           onPress: () => navigation.navigate('Intro'),
+    //         },
+    //       ],
+    //     );
+    //   });
   }, []);
 
   const pickerHandler = (item, key) => {
@@ -162,7 +168,7 @@ const SignUpPage = props => {
             selectedValue={pickerValue}
             style={styles.cityDropDown}
             onValueChange={pickerHandler}>
-            {datasource.map((item, key) => (
+            {cityList.data.map((item, key) => (
               <Picker.Item label={item.name} value={item.id} key={key} />
             ))}
           </Picker>
