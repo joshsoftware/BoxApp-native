@@ -16,6 +16,8 @@ import {
 } from '../components/Validation';
 import ApiHelper from './ApiHelper';
 
+import { fetchCities } from '../actions/apiCitiesAction';
+
 const SignUpPage = props => {
   const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
@@ -87,7 +89,7 @@ const SignUpPage = props => {
 
   useEffect(() => {
     console.log('In use effect');
-    dispatch({ type: 'Fetch_Data' });
+    dispatch(fetchCities());
     // ApiHelper('cities')
     //   .then(responseJson => {
     //     setDataSource(responseJson);
@@ -168,7 +170,7 @@ const SignUpPage = props => {
             selectedValue={pickerValue}
             style={styles.cityDropDown}
             onValueChange={pickerHandler}>
-            {cityList.data.map((item, key) => (
+            {cityList.allCities.map((item, key) => (
               <Picker.Item label={item.name} value={item.id} key={key} />
             ))}
           </Picker>

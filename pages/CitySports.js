@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, BackHandler, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'galio-framework';
 import Grid from './Grid';
 import ApiHelper from './ApiHelper';
+import { fetchSports } from '../actions/apiSportsAction';
 
 const CitySports = props => {
   const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   const tokenObject = navigation.getParam('token');
+
+  const dispatch = useDispatch();
+  const sportsList = useSelector(state => state.apiReducer);
 
   /* Fetch sports list for user city */
   useEffect(() => {
@@ -28,18 +33,19 @@ const CitySports = props => {
     });
 
     if (tokenObject.token) {
-      ApiHelper('city_sports/display', null, {}, 'GET', {
-        'user-auth-token': tokenObject.token,
-      })
-        .then(responseJson => {
-          setDataSource(responseJson);
-        })
-        .catch(error => {
-          Alert.alert(
-            'Server error',
-            'An unexpected error has occured, unable to fetch sports..',
-          );
-        });
+      dispatch(fetchSports());
+      // ApiHelper('city_sports/display', null, {}, 'GET', {
+      //   'user-auth-token': tokenObject.token,
+      // })
+      //   .then(responseJson => {
+      //     setDataSource(responseJson);
+      //   })
+      //   .catch(error => {
+      //     Alert.alert(
+      //       'Server error',
+      //       'An unexpected error has occured, unable to fetch sports..',
+      //     );
+      //   });
     }
   }, [tokenObject]);
 
@@ -53,15 +59,25 @@ const CitySports = props => {
     });
   };
 
-  if (datasource.length > 0) {
+  if (sportsList.sportsForCity.length > 0) {
     return (
       <View style={styles.body}>
-        <Grid items={datasource} setLevelChange={onSelect} />
+        <Grid items={sportsList.sportsForCity} setLevelChange={onSelect} />
       </View>
     );
   }
   return <Text>Loading.....</Text>;
 };
+
+//   if (datasource.length > 0) {
+//     return (
+//       <View style={styles.body}>
+//         <Grid items={datasource} setLevelChange={onSelect} />
+//       </View>
+//     );
+//   }
+//   return <Text>Loading.....</Text>;
+// };
 
 const styles = StyleSheet.create({
   body: {

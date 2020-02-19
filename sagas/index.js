@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
-import apiSaga from './apiSaga';
+import apiCitiesSaga from './apiCitiesSaga';
+import apiSportsSaga from './apiSportsSaga';
 
 export default function* rootSaga() {
-  yield all([apiSaga()]);
+  yield all([apiCitiesSaga(), apiSportsSaga()]);
 }
