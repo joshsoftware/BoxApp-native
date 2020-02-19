@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'galio-framework';
 import Grid from './Grid';
 import ApiHelper from './ApiHelper';
-import { fetchSports } from '../actions/apiSportsAction';
+import { fetchSports } from '../actions/getSportsAction';
 
 const CitySports = props => {
   const { navigation } = props;
@@ -12,7 +12,7 @@ const CitySports = props => {
   const tokenObject = navigation.getParam('token');
 
   const dispatch = useDispatch();
-  const sportsList = useSelector(state => state.apiReducer);
+  const sportsList = useSelector(state => state.sportsReducer);
 
   /* Fetch sports list for user city */
   useEffect(() => {
@@ -68,16 +68,6 @@ const CitySports = props => {
   }
   return <Text>Loading.....</Text>;
 };
-
-//   if (datasource.length > 0) {
-//     return (
-//       <View style={styles.body}>
-//         <Grid items={datasource} setLevelChange={onSelect} />
-//       </View>
-//     );
-//   }
-//   return <Text>Loading.....</Text>;
-// };
 
 const styles = StyleSheet.create({
   body: {

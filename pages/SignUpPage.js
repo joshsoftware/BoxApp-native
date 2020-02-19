@@ -16,7 +16,8 @@ import {
 } from '../components/Validation';
 import ApiHelper from './ApiHelper';
 
-import { fetchCities } from '../actions/apiCitiesAction';
+import { fetchCities } from '../actions/getCitiesAction';
+import { addUserDetails } from '../actions/userRegistrationAction';
 
 const SignUpPage = props => {
   const { navigation } = props;
@@ -29,42 +30,45 @@ const SignUpPage = props => {
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
-  const cityList = useSelector(state => state.apiReducer);
+  const cityList = useSelector(state => state.citiesReducer);
+  const userDetails = useSelector(state => state.userRegReducer);
 
   const handleInput = (value, name) => {
     setUser({ ...user, [name]: value });
   };
 
   const addUser = () => {
-    setIsLoading(true);
-    ApiHelper(
-      'users',
-      JSON.stringify({
-        user: {
-          first_name: user.firstName,
-          last_name: user.lastName,
-          contact_number: user.contactNumber,
-          email: user.emailId,
-          city_id: user.cityId,
-        },
-      }),
-      {},
-      'POST',
-    )
-      .then(responseJson => {
-        setIsLoading(false);
-        if (responseJson.error) {
-          Alert.alert('Registration status', responseJson.error);
-        } else {
-          Alert.alert('Registration status', responseJson.message);
-        }
-      })
-      .catch(() => {
-        Alert.alert(
-          'Server error',
-          'An unexpected error has occured, cannot process further registration..',
-        );
-      });
+    dispatch(addUserDetails(user));
+    // setIsLoading(true);
+
+    // ApiHelper(
+    //   'users',
+    //   JSON.stringify({
+    //     user: {
+    //       first_name: user.firstName,
+    //       last_name: user.lastName,
+    //       contact_number: user.contactNumber,
+    //       email: user.emailId,
+    //       city_id: user.cityId,
+    //     },
+    //   }),
+    //   {},
+    //   'POST',
+    // )
+    //   .then(responseJson => {
+    //     setIsLoading(false);
+    //     if (responseJson.error) {
+    //       Alert.alert('Registration status', responseJson.error);
+    //     } else {
+    //       Alert.alert('Registration status', responseJson.message);
+    //     }
+    //   })
+    //   .catch(() => {
+    //     Alert.alert(
+    //       'Server error',
+    //       'An unexpected error has occured, cannot process further registration..',
+    //     );
+    //   });
   };
 
   const noErrorsPresent = validationErrors => {
@@ -88,7 +92,6 @@ const SignUpPage = props => {
   };
 
   useEffect(() => {
-    console.log('In use effect');
     dispatch(fetchCities());
     // ApiHelper('cities')
     //   .then(responseJson => {
@@ -170,7 +173,7 @@ const SignUpPage = props => {
             selectedValue={pickerValue}
             style={styles.cityDropDown}
             onValueChange={pickerHandler}>
-            {cityList.allCities.map((item, key) => (
+            {cityList.Cities.map((item, key) => (
               <Picker.Item label={item.name} value={item.id} key={key} />
             ))}
           </Picker>

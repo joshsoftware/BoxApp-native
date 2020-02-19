@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux';
-import apiReducer from './apiReducer';
+import citiesReducer from './citiesReducer';
+import sportsReducer from './sportsReducer';
+import userRegReducer from './userRegReducer';
 
 export default combineReducers({
-  apiReducer,
+  citiesReducer,
+  sportsReducer,
+  userRegReducer,
 });

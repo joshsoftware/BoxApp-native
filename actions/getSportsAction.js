@@ -1,5 +1,7 @@
-export const addSportsToStore = 'addsportsToStore';
-export const fetchSportsFromAPI = 'fetchSportsFromAPI';
+import {
+  addSportsToStore,
+  fetchSportsFromAPI,
+} from '../actionConstants/getSportsConstants';
 
 export const fetchSports = () => {
   return { type: fetchSportsFromAPI };
