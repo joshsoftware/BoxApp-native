@@ -1,4 +1,6 @@
 import qs from 'query-string';
+import { put, takeEvery } from 'redux-saga/effects';
+import { callapiHelper } from '../actionConstants/apiHelperConstants';
 
 function getDefaultHeaders() {
   const defaultHeaders = {
@@ -8,32 +10,44 @@ function getDefaultHeaders() {
   return defaultHeaders;
 }
 
-export default function(
-  endpoint,
-  body = null,
-  query_parameter = {},
-  method = 'GET',
-  headers = {},
-) {
+function* api(action) {
+  console.log('in apihelper..........', action.payload);
+
+  const {
+    endpoint,
+    body,
+    query,
+    method,
+    headers,
+    sucessAction,
+    failureAction,
+    failureMessage,
+    successMsg,
+  } = action.payload;
+
   let url = `${process.env.API_URL}/api/v1/${endpoint}`;
-  if (method === 'GET' && Object.keys(query_parameter).length > 0) {
-    url = `${url}?${qs.stringify(query_parameter)}`;
+  if (method === 'GET' && Object.keys(query).length > 0) {
+    url = `${url}?${qs.stringify(query)}`;
   }
-  return fetch(url, {
+  console.log('url..........', url);
+  const response = yield fetch(url, {
     method,
     headers: {
       ...getDefaultHeaders(),
       ...headers,
     },
     body,
-  })
-    .then(response => {
-      return response.json();
-    })
-    .then(jsonResponse => {
-      return jsonResponse;
-    })
-    .catch(error => {
-      throw error;
-    });
+  });
+
+  if (response.ok) {
+    const data = yield response.json();
+    console.log('data is.........', data);
+    yield put({ type: sucessAction, payload: data });
+  } else {
+    yield put({ type: failureAction, payload: { message: failureMessage } });
+  }
+}
+
+export default function* fetchApisaga() {
+  yield takeEvery(callapiHelper, api);
 }

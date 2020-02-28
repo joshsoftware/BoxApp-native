@@ -9,19 +9,29 @@ import {
   Alert,
 } from 'react-native';
 import { Button } from 'galio-framework';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import Mycard from './MyCard';
 import ApiHelper from './ApiHelper';
 import { getToken } from '../components/TokenManager';
+import { listOpponents } from '../actions/getOpponentsAction';
+import opponentsReducer from '../reducers/opponentsReducer';
 
 const Opponents = props => {
   const { navigation } = props;
   const [datasource, setDataSource] = useState([]);
   const [fetchOpponents, setFetchOpponents] = useState(false);
   const [noOfPlayersRemainingText, setNoOfPlayersRemainingText] = useState('');
-  const token = navigation.getParam('token');
+
+  const dispatch = useDispatch();
+  const opponentReducer = useSelector(state => state.opponentsReducer);
+
+  const signinDetails = useSelector(state => state.signInReducer);
+  const { token } = signinDetails.userSignInDetails[0];
 
   useEffect(() => {
+    dispatch(listOpponents(token));
+
     BackHandler.addEventListener('hardwareBackPress', () => {
       Alert.alert('Exit', 'Are you sure you want to exit?', [
         {
@@ -37,23 +47,6 @@ const Opponents = props => {
       ]);
       return true;
     });
-
-    ApiHelper('list_opponents', null, {}, 'GET', { 'user-auth-token': token })
-      .then(responseJson => {
-        setFetchOpponents(true);
-        setDataSource(responseJson.opponents);
-        let remainingText = `${responseJson.free_slots} more player`;
-        if (responseJson.free_slots > 1) {
-          remainingText += 's';
-        }
-        setNoOfPlayersRemainingText(remainingText);
-      })
-      .catch(error => {
-        Alert.alert(
-          'Server error',
-          'An unexpected error has occured, unable to fetch opponents..',
-        );
-      });
   }, []);
 
   const signOut = () => {
@@ -62,41 +55,44 @@ const Opponents = props => {
   };
 
   const count = Object.keys(datasource).length;
-  return (
-    <View style={styles.bodyContainer}>
-      <View style={styles.buttonsContainer}>
-        <Button
-          color="info"
-          size="small"
-          shadowColor="black"
-          round
-          onPress={signOut}>
-          Sign Out
-        </Button>
-      </View>
+  if (opponentReducer.OpponentsList.opponents.length > 0) {
+    return (
+      <View style={styles.bodyContainer}>
+        <View style={styles.buttonsContainer}>
+          <Button
+            color="info"
+            size="small"
+            shadowColor="black"
+            round
+            onPress={signOut}>
+            Sign Out
+          </Button>
+        </View>
 
-      <View>
-        {datasource.map((user, i) => {
-          return (
-            <View key={i}>
-              <ScrollView>
-                <Mycard
-                  key={user.id}
-                  name={`${user.first_name} ${user.last_name}`}
-                  number={user.contact_number}
-                />
-              </ScrollView>
-            </View>
-          );
-        })}
+        <View>
+          {opponentReducer.OpponentsList.opponents.map((user, i) => {
+            return (
+              <View key={i}>
+                <ScrollView>
+                  <Mycard
+                    key={user.id}
+                    name={`${user.first_name} ${user.last_name}`}
+                    number={user.contact_number}
+                  />
+                </ScrollView>
+              </View>
+            );
+          })}
+        </View>
+        {fetchOpponents && count < 4 && (
+          <Text style={styles.text}>
+            We are waiting for {noOfPlayersRemainingText} to join..
+          </Text>
+        )}
       </View>
-      {fetchOpponents && count < 4 && (
-        <Text style={styles.text}>
-          We are waiting for {noOfPlayersRemainingText} to join..
-        </Text>
-      )}
-    </View>
-  );
+    );
+  }
+  return <Text>Loading.....</Text>;
 };
 
 const styles = StyleSheet.create({

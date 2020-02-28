@@ -1,7 +1,7 @@
 import {
   addCitiesToStore,
   fetchCitiesFromAPI,
-} from '../actionConstants/getcitiesConstants';
+} from '../actionConstants/getCitiesConstants';
 
 export const fetchCities = () => {
   return { type: fetchCitiesFromAPI };

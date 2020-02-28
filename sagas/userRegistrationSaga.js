@@ -2,13 +2,13 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import ApiHelper from '../pages/ApiHelper';
 import { addRegDetails } from '../actions/userRegistrationAction';
 import { addUserAPI } from '../actionConstants/userRegConstants';
+import fetchApiHelper from '../actions/apiHelperAction';
 
 function* addUser(action) {
   const user = action.payload;
-  const data = yield call(
-    ApiHelper,
-    'users',
-    JSON.stringify({
+  const details = {
+    endpoint: 'users',
+    body: JSON.stringify({
       user: {
         first_name: user.firstName,
         last_name: user.lastName,
@@ -17,11 +17,11 @@ function* addUser(action) {
         city_id: user.cityId,
       },
     }),
-    {},
-    'POST',
-  );
-
-  yield put(addRegDetails([data]));
+    query: {},
+    method: 'POST',
+    headers: {},
+  };
+  yield put(fetchApiHelper(details));
 }
 
 export default function* apiRegistrationSaga() {

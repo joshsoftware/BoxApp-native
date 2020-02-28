@@ -1,13 +1,20 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
-import ApiHelper from '../pages/ApiHelper';
-import { addCities } from '../actions/getCitiesAction';
-import { fetchCitiesFromAPI } from '../actionConstants/getcitiesConstants';
+import { put, takeEvery } from 'redux-saga/effects';
 
-function* fetchCities() {
-  const data = yield call(ApiHelper, 'cities');
-  yield put(addCities(data));
+import * as citiesAction from '../actionConstants/getCitiesConstants';
+import fetchApiHelper from '../actions/apiHelperAction';
+
+function* getCities() {
+  const details = {
+    endpoint: 'cities',
+    query: {},
+    method: 'GET',
+    headers: {},
+    successAction: citiesAction.getCitiesSuccess,
+    failureAction: citiesAction.getCitiesFailure,
+  };
+  yield put(fetchApiHelper(details));
 }
 
 export default function* apiCitiesSaga() {
-  yield takeEvery(fetchCitiesFromAPI, fetchCities);
+  yield takeEvery(citiesAction.fetchCitiesFromAPI, getCities);
 }

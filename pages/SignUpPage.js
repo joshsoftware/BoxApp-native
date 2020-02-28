@@ -39,36 +39,6 @@ const SignUpPage = props => {
 
   const addUser = () => {
     dispatch(addUserDetails(user));
-    // setIsLoading(true);
-
-    // ApiHelper(
-    //   'users',
-    //   JSON.stringify({
-    //     user: {
-    //       first_name: user.firstName,
-    //       last_name: user.lastName,
-    //       contact_number: user.contactNumber,
-    //       email: user.emailId,
-    //       city_id: user.cityId,
-    //     },
-    //   }),
-    //   {},
-    //   'POST',
-    // )
-    //   .then(responseJson => {
-    //     setIsLoading(false);
-    //     if (responseJson.error) {
-    //       Alert.alert('Registration status', responseJson.error);
-    //     } else {
-    //       Alert.alert('Registration status', responseJson.message);
-    //     }
-    //   })
-    //   .catch(() => {
-    //     Alert.alert(
-    //       'Server error',
-    //       'An unexpected error has occured, cannot process further registration..',
-    //     );
-    //   });
   };
 
   const noErrorsPresent = validationErrors => {
@@ -93,22 +63,6 @@ const SignUpPage = props => {
 
   useEffect(() => {
     dispatch(fetchCities());
-    // ApiHelper('cities')
-    //   .then(responseJson => {
-    //     setDataSource(responseJson);
-    //   })
-    //   .catch(error => {
-    //     Alert.alert(
-    //       'Server error',
-    //       'An unexpected error has occured, unable to fetch cities..',
-    //       [
-    //         {
-    //           text: 'OK',
-    //           onPress: () => navigation.navigate('Intro'),
-    //         },
-    //       ],
-    //     );
-    //   });
   }, []);
 
   const pickerHandler = (item, key) => {

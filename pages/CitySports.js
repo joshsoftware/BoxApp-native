@@ -8,7 +8,6 @@ import { fetchSports } from '../actions/getSportsAction';
 
 const CitySports = props => {
   const { navigation } = props;
-  const [datasource, setDataSource] = useState([]);
   const tokenObject = navigation.getParam('token');
 
   const dispatch = useDispatch();
@@ -34,18 +33,6 @@ const CitySports = props => {
 
     if (tokenObject.token) {
       dispatch(fetchSports());
-      // ApiHelper('city_sports/display', null, {}, 'GET', {
-      //   'user-auth-token': tokenObject.token,
-      // })
-      //   .then(responseJson => {
-      //     setDataSource(responseJson);
-      //   })
-      //   .catch(error => {
-      //     Alert.alert(
-      //       'Server error',
-      //       'An unexpected error has occured, unable to fetch sports..',
-      //     );
-      //   });
     }
   }, [tokenObject]);
 

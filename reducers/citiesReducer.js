@@ -1,4 +1,4 @@
-import { addCitiesToStore } from '../actionConstants/getcitiesConstants';
+import * as citiesActionConstants from '../actionConstants/getCitiesConstants';
 
 const initialState = {
   Cities: [],
@@ -6,8 +6,12 @@ const initialState = {
 
 const citiesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case addCitiesToStore:
+    case citiesActionConstants.initiateCitiesAPICall:
       return { ...state, Cities: action.payload };
+    case citiesActionConstants.getCitiesSuccess:
+      return { ...state, Cities: action.payload };
+    case citiesActionConstants.getCitiesFailure:
+      return { ...state, Cities: action.payload.message };
     default:
       return state;
   }
