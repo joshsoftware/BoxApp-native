@@ -1,4 +1,4 @@
-import { addSportsToStore } from '../actionConstants/getSportsConstants';
+import * as sportsActionConstants from '../actionConstants/getSportsConstants';
 
 const initialState = {
   sportsForCity: [],
@@ -6,7 +6,12 @@ const initialState = {
 
 const sportsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case addSportsToStore:
+    case sportsActionConstants.initiateGetSportsAPICall:
+      return { ...state, sportsForCity: action.payload };
+    case sportsActionConstants.getSportsSuccess:
+      console.log('in sport reducer');
+      return { ...state, sportsForCity: action.payload };
+    case sportsActionConstants.getSportsFailure:
       return { ...state, sportsForCity: action.payload };
     default:
       return state;

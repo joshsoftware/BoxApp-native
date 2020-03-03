@@ -14,7 +14,6 @@ import {
   validateSignUp,
   showAlertForInvalidInput,
 } from '../components/Validation';
-import ApiHelper from './ApiHelper';
 
 import { fetchCities } from '../actions/getCitiesAction';
 import { addUserDetails } from '../actions/userRegistrationAction';
@@ -127,7 +126,7 @@ const SignUpPage = props => {
             selectedValue={pickerValue}
             style={styles.cityDropDown}
             onValueChange={pickerHandler}>
-            {cityList.Cities.map((item, key) => (
+            {cityList.cities.map((item, key) => (
               <Picker.Item label={item.name} value={item.id} key={key} />
             ))}
           </Picker>

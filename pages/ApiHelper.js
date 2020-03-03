@@ -1,5 +1,5 @@
 import qs from 'query-string';
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, takeEvery, select } from 'redux-saga/effects';
 import { callapiHelper } from '../actionConstants/apiHelperConstants';
 
 function getDefaultHeaders() {
@@ -11,7 +11,7 @@ function getDefaultHeaders() {
 }
 
 function* api(action) {
-  console.log('in apihelper..........', action.payload);
+  console.log('payload in api.................', action.payload);
 
   const {
     endpoint,
@@ -19,30 +19,41 @@ function* api(action) {
     query,
     method,
     headers,
-    sucessAction,
+    successAction,
     failureAction,
     failureMessage,
-    successMsg,
+    isTokenRequired,
   } = action.payload;
 
   let url = `${process.env.API_URL}/api/v1/${endpoint}`;
   if (method === 'GET' && Object.keys(query).length > 0) {
     url = `${url}?${qs.stringify(query)}`;
   }
-  console.log('url..........', url);
+  const getToken = yield select(state => state.setPasswordReducer);
+
+  const usertoken = () => {
+    if (isTokenRequired === true) {
+      console.log('in if');
+      const PasswordToken = getToken;
+      console.log('token', PasswordToken.userPasswordToken);
+      const { token } = PasswordToken.userPasswordToken;
+      console.log('token ==== ', token);
+      return { 'user-auth-token': token };
+    }
+    return {};
+  };
   const response = yield fetch(url, {
     method,
     headers: {
       ...getDefaultHeaders(),
-      ...headers,
+      ...usertoken(),
     },
     body,
   });
 
   if (response.ok) {
     const data = yield response.json();
-    console.log('data is.........', data);
-    yield put({ type: sucessAction, payload: data });
+    yield put({ type: successAction, payload: data });
   } else {
     yield put({ type: failureAction, payload: { message: failureMessage } });
   }

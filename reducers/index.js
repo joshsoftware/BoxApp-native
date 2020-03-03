@@ -4,6 +4,7 @@ import sportsReducer from './sportsReducer';
 import userRegReducer from './userRegReducer';
 import signInReducer from './signInReducer';
 import opponentsReducer from './opponentsReducer';
+import setPasswordReducer from './setPasswordReducer';
 
 export default combineReducers({
   citiesReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   userRegReducer,
   signInReducer,
   opponentsReducer,
+  setPasswordReducer,
 });

@@ -1,17 +1,17 @@
 import * as citiesActionConstants from '../actionConstants/getCitiesConstants';
 
 const initialState = {
-  Cities: [],
+  cities: [],
 };
 
 const citiesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case citiesActionConstants.initiateCitiesAPICall:
-      return { ...state, Cities: action.payload };
+    case citiesActionConstants.initiateAddUserAPICall:
+      return { ...state, cities: action.payload };
     case citiesActionConstants.getCitiesSuccess:
-      return { ...state, Cities: action.payload };
+      return { ...state, cities: action.payload };
     case citiesActionConstants.getCitiesFailure:
-      return { ...state, Cities: action.payload.message };
+      return { ...state, cities: action.payload.message };
     default:
       return state;
   }

@@ -4,7 +4,7 @@ import apiSportsSaga from './getSportsSaga';
 import apiRegistrationSaga from './userRegistrationSaga';
 import signInSaga from './signInSaga';
 import getOpponentsSaga from './getOpponentsSaga';
-import apiHelperSaga from './apiHelperSaga';
+import setPasswordSaga from './setPasswordSaga';
 import fetchApisaga from '../pages/ApiHelper';
 
 export default function* rootSaga() {
@@ -15,5 +15,6 @@ export default function* rootSaga() {
     signInSaga(),
     getOpponentsSaga(),
     fetchApisaga(),
+    setPasswordSaga(),
   ]);
 }

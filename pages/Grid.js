@@ -17,8 +17,7 @@ const Grid = props => {
       itemDimension={145}
       items={items}
       renderItem={({ item, index }) => (
-        <TouchableOpacity
-          onPress={() => setLevelChange(item.id, item.name, item.free_slots)}>
+        <TouchableOpacity onPress={() => setLevelChange()}>
           <View
             style={
               checkUnavailability(item.free_slots)
@@ -33,6 +32,8 @@ const Grid = props => {
     />
   );
 };
+
+// item.id, item.name, item.free_slots
 
 const styles = StyleSheet.create({
   item: {

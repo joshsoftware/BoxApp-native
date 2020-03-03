@@ -1,8 +1,4 @@
-import { addRegDetailsToStore } from '../actionConstants/userRegConstants';
-import {
-  sucessAction,
-  failureAction,
-} from '../actionConstants/apiHelperConstants';
+import * as userRegistrationConstants from '../actionConstants/userRegConstants';
 
 const initialState = {
   userRegDetails: [],
@@ -10,9 +6,11 @@ const initialState = {
 
 const userRegReducer = (state = initialState, action) => {
   switch (action.type) {
-    case sucessAction:
+    case userRegistrationConstants.initiateAddUserAPICall:
       return { ...state, userRegDetails: action.payload };
-    case failureAction:
+    case userRegistrationConstants.addUserSuccess:
+      return { ...state, userRegDetails: action.payload };
+    case userRegistrationConstants.addUserFailure:
       return { ...state, userRegDetails: action.payload.message };
     default:
       return state;

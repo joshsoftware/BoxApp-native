@@ -1,7 +1,11 @@
 import { put, takeEvery } from 'redux-saga/effects';
-
-import * as citiesAction from '../actionConstants/getCitiesConstants';
 import fetchApiHelper from '../actions/apiHelperAction';
+
+import {
+  fetchCitiesFromAPI,
+  getCitiesSuccess,
+  getCitiesFailure,
+} from '../actionConstants/getCitiesConstants';
 
 function* getCities() {
   const details = {
@@ -9,12 +13,12 @@ function* getCities() {
     query: {},
     method: 'GET',
     headers: {},
-    successAction: citiesAction.getCitiesSuccess,
-    failureAction: citiesAction.getCitiesFailure,
+    successAction: getCitiesSuccess,
+    failureAction: getCitiesFailure,
   };
   yield put(fetchApiHelper(details));
 }
 
 export default function* apiCitiesSaga() {
-  yield takeEvery(citiesAction.fetchCitiesFromAPI, getCities);
+  yield takeEvery(fetchCitiesFromAPI, getCities);
 }

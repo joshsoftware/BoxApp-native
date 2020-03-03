@@ -3,15 +3,16 @@ import { StyleSheet, View, BackHandler, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'galio-framework';
 import Grid from './Grid';
-import ApiHelper from './ApiHelper';
-import { fetchSports } from '../actions/getSportsAction';
+import getSports from '../actions/getSportsAction';
 
 const CitySports = props => {
   const { navigation } = props;
-  const tokenObject = navigation.getParam('token');
+  // const tokenObject = navigation.getParam('token');
 
   const dispatch = useDispatch();
   const sportsList = useSelector(state => state.sportsReducer);
+  const PasswordToken = useSelector(state => state.setPasswordReducer);
+  // let { token } = PasswordToken.userPasswordToken;
 
   /* Fetch sports list for user city */
   useEffect(() => {
@@ -31,19 +32,15 @@ const CitySports = props => {
       return true;
     });
 
-    if (tokenObject.token) {
-      dispatch(fetchSports());
-    }
-  }, [tokenObject]);
+    dispatch(getSports());
 
-  const onSelect = (number, name) => {
-    const sportId = number;
-    const sportName = name;
-    navigation.navigate('Level', {
-      sport: sportId,
-      sportname: sportName,
-      token: tokenObject.token,
-    });
+    // if (tokenObject.token) {
+    //   dispatch(fetchSports());
+    // }
+  }, []);
+
+  const onSelect = () => {
+    navigation.navigate('Level');
   };
 
   if (sportsList.sportsForCity.length > 0) {

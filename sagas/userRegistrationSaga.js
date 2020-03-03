@@ -1,7 +1,11 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
-import ApiHelper from '../pages/ApiHelper';
-import { addRegDetails } from '../actions/userRegistrationAction';
-import { addUserAPI } from '../actionConstants/userRegConstants';
+import { put, takeEvery } from 'redux-saga/effects';
+
+import {
+  addUserAPICall,
+  addUserSuccess,
+  addUserFailure,
+} from '../actionConstants/userRegConstants';
+
 import fetchApiHelper from '../actions/apiHelperAction';
 
 function* addUser(action) {
@@ -20,10 +24,13 @@ function* addUser(action) {
     query: {},
     method: 'POST',
     headers: {},
+    successAction: addUserSuccess,
+    failureAction: addUserFailure,
   };
+
   yield put(fetchApiHelper(details));
 }
 
 export default function* apiRegistrationSaga() {
-  yield takeEvery(addUserAPI, addUser);
+  yield takeEvery(addUserAPICall, addUser);
 }

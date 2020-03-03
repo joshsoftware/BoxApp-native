@@ -1,15 +1,8 @@
-import {
-  addSportsToStore,
-  fetchSportsFromAPI,
-} from '../actionConstants/getSportsConstants';
+import { getSportsAPICall } from '../actionConstants/getSportsConstants';
 
-export const fetchSports = () => {
-  return { type: fetchSportsFromAPI };
+const getSports = () => {
+  console.log('in sport action');
+  return { type: getSportsAPICall };
 };
 
-export const addSports = data => {
-  return {
-    type: addSportsToStore,
-    payload: data,
-  };
-};
+export default getSports;

@@ -1,15 +1,12 @@
-import {
-  addRegDetailsToStore,
-  addUserAPI,
-} from '../actionConstants/userRegConstants';
+import * as userRegistrationAction from '../actionConstants/userRegConstants';
 
 export const addUserDetails = details => {
-  return { type: addUserAPI, payload: details };
+  return { type: userRegistrationAction.addUserAPICall, payload: details };
 };
 
 export const addRegDetails = data => {
   return {
-    type: addRegDetailsToStore,
+    type: userRegistrationAction.addRegDetailsToStore,
     payload: data,
   };
 };

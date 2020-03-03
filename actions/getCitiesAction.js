@@ -1,15 +1,12 @@
-import {
-  addCitiesToStore,
-  fetchCitiesFromAPI,
-} from '../actionConstants/getCitiesConstants';
+import * as citiesAction from '../actionConstants/getCitiesConstants';
 
 export const fetchCities = () => {
-  return { type: fetchCitiesFromAPI };
+  return { type: citiesAction.fetchCitiesFromAPI };
 };
 
 export const addCities = data => {
   return {
-    type: addCitiesToStore,
+    type: citiesAction.addCitiesToStore,
     payload: data,
   };
 };
