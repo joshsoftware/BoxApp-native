@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Alert } from 'react-native';
 import { Button, Text } from 'galio-framework';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomInput from '../components/CustomInput';
 import {
   validateSignIn,
@@ -8,6 +9,7 @@ import {
 } from '../components/Validation';
 import { setToken } from '../components/TokenManager';
 import ApiHelper from './ApiHelper';
+import { userSignIn } from '../actions/signInAction';
 
 // Component to manage the Sign in page
 const SignInPage = props => {
@@ -15,37 +17,24 @@ const SignInPage = props => {
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
 
+  const dispatch = useDispatch();
+  const signInDetails = useSelector(state => state.signInReducer);
   const handleInput = (value, name) => {
     setUser({ ...user, [name]: value });
   };
 
   const signIn = () => {
-    ApiHelper(
-      'sessions',
-      JSON.stringify({
-        email: user.emailId,
-        password: user.password,
-      }),
-      {},
-      'POST',
-    )
-      .then(responseJson => {
-        if (responseJson.error) {
-          Alert.alert(
-            'Invalid details',
-            'Sorry email id or password is incorrect..',
-          );
-        } else {
-          setToken('signInToken', responseJson);
-          navigation.navigate('Opponents', { token: responseJson.token });
-        }
-      })
-      .catch(error => {
-        Alert.alert(
-          'Server error',
-          'An unexpected error has occured, cannot sign in..',
-        );
-      });
+    dispatch(userSignIn(user));
+
+    if (signInDetails.userSignInDetails.length > 0) {
+      navigation.navigate('Opponents');
+      console.log('on page signin', signInDetails);
+    } else {
+      Alert.alert(
+        'Invalid details',
+        'Sorry email id or password is incorrect..',
+      );
+    }
   };
 
   const noErrorsPresent = validationErrors => {

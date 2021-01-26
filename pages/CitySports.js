@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, BackHandler, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'galio-framework';
 import Grid from './Grid';
-import ApiHelper from './ApiHelper';
+import getSports from '../actions/getSportsAction';
 
 const CitySports = props => {
   const { navigation } = props;
-  const [datasource, setDataSource] = useState([]);
-  const tokenObject = navigation.getParam('token');
+  // const tokenObject = navigation.getParam('token');
+
+  const dispatch = useDispatch();
+  const sportsList = useSelector(state => state.sportsReducer);
+  const PasswordToken = useSelector(state => state.setPasswordReducer);
+  // let { token } = PasswordToken.userPasswordToken;
 
   /* Fetch sports list for user city */
   useEffect(() => {
@@ -27,36 +32,21 @@ const CitySports = props => {
       return true;
     });
 
-    if (tokenObject.token) {
-      ApiHelper('city_sports/display', null, {}, 'GET', {
-        'user-auth-token': tokenObject.token,
-      })
-        .then(responseJson => {
-          setDataSource(responseJson);
-        })
-        .catch(error => {
-          Alert.alert(
-            'Server error',
-            'An unexpected error has occured, unable to fetch sports..',
-          );
-        });
-    }
-  }, [tokenObject]);
+    dispatch(getSports());
 
-  const onSelect = (number, name) => {
-    const sportId = number;
-    const sportName = name;
-    navigation.navigate('Level', {
-      sport: sportId,
-      sportname: sportName,
-      token: tokenObject.token,
-    });
+    // if (tokenObject.token) {
+    //   dispatch(fetchSports());
+    // }
+  }, []);
+
+  const onSelect = () => {
+    navigation.navigate('Level');
   };
 
-  if (datasource.length > 0) {
+  if (sportsList.sportsForCity.length > 0) {
     return (
       <View style={styles.body}>
-        <Grid items={datasource} setLevelChange={onSelect} />
+        <Grid items={sportsList.sportsForCity} setLevelChange={onSelect} />
       </View>
     );
   }

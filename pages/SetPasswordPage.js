@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Text } from 'galio-framework';
+import { NativeRouter, Redirect, Route } from 'react-router-native';
 import CustomInput from '../components/CustomInput';
 import {
   validateSetPassword,
   showAlertForInvalidInput,
 } from '../components/Validation';
 import { setToken } from '../components/TokenManager';
-import ApiHelper from './ApiHelper';
+import setPassword from '../actions/setPasswordAction';
 
 const SetPasswordPage = props => {
   const { navigation } = props;
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
   let confirmationToken;
+
+  const dispatch = useDispatch();
+  const PasswordToken = useSelector(state => state.setPasswordReducer);
+
+  console.log(PasswordToken);
 
   useEffect(() => {
     confirmationToken = navigation.state.params.confirm;
@@ -24,34 +31,38 @@ const SetPasswordPage = props => {
   };
 
   const setPasswordForUser = () => {
-    ApiHelper(
-      'set_password',
-      JSON.stringify({
-        user: {
-          confirmation_token: confirmationToken,
-          password: user.password,
-          password_confirmation: user.confirmPassword,
-        },
-      }),
-      {},
-      'POST',
-    )
-      .then(responseJson => {
-        if (responseJson.error) {
-          Alert.alert('Server Error', responseJson.error);
-        } else {
-          setToken('setPasswordToken', responseJson);
-          Alert.alert('Successful', 'Password has been set successfully..');
-          navigation.navigate('Sports', { token: responseJson });
-        }
-      })
-      .catch(err => {
-        Alert.alert(
-          'Server error',
-          'An unexpected error has occured, unable to set password..',
-        );
-      });
+    dispatch(setPassword(confirmationToken, user));
+    // navigation.navigate('Sports');
+
     confirmationToken = '';
+
+    // ApiHelper(
+    //   'set_password',
+    //   JSON.stringify({
+    //     user: {
+    //       confirmation_token: confirmationToken,
+    //       password: user.password,
+    //       password_confirmation: user.confirmPassword,
+    //     },
+    //   }),
+    //   {},
+    //   'POST',
+    // )
+    // .then(responseJson => {
+    //   if (responseJson.error) {
+    //     Alert.alert('Server Error', responseJson.error);
+    //   } else {
+    //     setToken('setPasswordToken', responseJson);
+    //     Alert.alert('Successful', 'Password has been set successfully..');
+    //     navigation.navigate('Sports', { token: responseJson });
+    //   }
+    // })
+    // .catch(err => {
+    //   Alert.alert(
+    //     'Server error',
+    //     'An unexpected error has occured, unable to set password..',
+    //   );
+    // });
   };
 
   const noErrorsPresent = validationErrors => {
@@ -76,52 +87,64 @@ const SetPasswordPage = props => {
     }
   };
 
+  <Route>
+    {PasswordToken
+      ? (console.log('yyyyyyyy'), (<Redirect to="intro" />))
+      : console.log('NNNNNNNNNNN')
+    // <Redirect to="/setpassword" />
+    }
+  </Route>;
+
   return (
-    <View style={styles.bodyContainer}>
-      <Text h4 style={styles.registerLabel}>
-        Set password here
-      </Text>
+    <NativeRouter>
+      <View style={styles.bodyContainer}>
+        <Text h4 style={styles.registerLabel}>
+          Set password here
+        </Text>
 
-      <CustomInput
-        placeholder="Password"
-        name="password"
-        defaultValue={user.password}
-        handleInputChange={handleInput}
-        secureTextEntry
-        borderStyle={errors.password ? styles.error : styles.textInputBorder}
-      />
+        <CustomInput
+          placeholder="Password"
+          name="password"
+          defaultValue={user.password}
+          handleInputChange={handleInput}
+          secureTextEntry
+          borderStyle={errors.password ? styles.error : styles.textInputBorder}
+        />
 
-      <CustomInput
-        placeholder="Confirm Password"
-        name="confirmPassword"
-        defaultValue={user.confirmPassword}
-        handleInputChange={handleInput}
-        secureTextEntry
-        borderStyle={
-          errors.confirmPassword ? styles.error : styles.textInputBorder
-        }
-      />
+        <CustomInput
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          defaultValue={user.confirmPassword}
+          handleInputChange={handleInput}
+          secureTextEntry
+          borderStyle={
+            errors.confirmPassword ? styles.error : styles.textInputBorder
+          }
+        />
 
-      <Button
-        color="info"
-        size="small"
-        shadowColor="black"
-        round
-        onPress={checkForSetPassword}
-        style={styles.submitButton}>
-        Confirm
-      </Button>
+        <Button
+          color="info"
+          size="small"
+          shadowColor="black"
+          round
+          onPress={checkForSetPassword}
+          style={styles.submitButton}>
+          Confirm
+        </Button>
 
-      <Button
-        color="error"
-        size="small"
-        shadowColor="black"
-        round
-        onPress={cancelPressed}
-        style={styles.submitButton}>
-        Cancel
-      </Button>
-    </View>
+        <Button
+          color="error"
+          size="small"
+          shadowColor="black"
+          round
+          onPress={cancelPressed}
+          style={styles.submitButton}>
+          Cancel
+        </Button>
+      </View>
+
+      {/* <Route path="intro" component={Confirm} /> */}
+    </NativeRouter>
   );
 };
 

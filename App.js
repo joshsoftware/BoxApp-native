@@ -9,6 +9,26 @@ import Opponents from './pages/Opponents';
 import LevelPage from './pages/LevelPage';
 import CitySports from './pages/CitySports';
 
+// const appRoutes: Routes = [
+//   {
+//     screen: IntroPage,
+//     navigationOptions: {
+//       headerShown: false,
+//     },
+//     path: 'intro',
+//   },
+//   {
+//     screen: SetPasswordPage,
+//     navigationOptions: {
+//       headerTitle: 'Set Password',
+//       headerLeft: () => {
+//         null;
+//       },
+//     },
+//     path: 'setpassword',
+//   },
+// ];
+
 const RootStack = createStackNavigator({
   Intro: {
     screen: IntroPage,
@@ -60,6 +80,7 @@ const RootStack = createStackNavigator({
         null;
       },
     },
+    path: 'sports',
   },
 
   Opponents: {

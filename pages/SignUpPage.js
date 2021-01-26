@@ -8,12 +8,15 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Button, Text } from 'galio-framework';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomInput from '../components/CustomInput';
 import {
   validateSignUp,
   showAlertForInvalidInput,
 } from '../components/Validation';
-import ApiHelper from './ApiHelper';
+
+import { fetchCities } from '../actions/getCitiesAction';
+import { addUserDetails } from '../actions/userRegistrationAction';
 
 const SignUpPage = props => {
   const { navigation } = props;
@@ -25,40 +28,16 @@ const SignUpPage = props => {
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
 
+  const dispatch = useDispatch();
+  const cityList = useSelector(state => state.citiesReducer);
+  const userDetails = useSelector(state => state.userRegReducer);
+
   const handleInput = (value, name) => {
     setUser({ ...user, [name]: value });
   };
 
   const addUser = () => {
-    setIsLoading(true);
-    ApiHelper(
-      'users',
-      JSON.stringify({
-        user: {
-          first_name: user.firstName,
-          last_name: user.lastName,
-          contact_number: user.contactNumber,
-          email: user.emailId,
-          city_id: user.cityId,
-        },
-      }),
-      {},
-      'POST',
-    )
-      .then(responseJson => {
-        setIsLoading(false);
-        if (responseJson.error) {
-          Alert.alert('Registration status', responseJson.error);
-        } else {
-          Alert.alert('Registration status', responseJson.message);
-        }
-      })
-      .catch(() => {
-        Alert.alert(
-          'Server error',
-          'An unexpected error has occured, cannot process further registration..',
-        );
-      });
+    dispatch(addUserDetails(user));
   };
 
   const noErrorsPresent = validationErrors => {
@@ -82,22 +61,7 @@ const SignUpPage = props => {
   };
 
   useEffect(() => {
-    ApiHelper('cities')
-      .then(responseJson => {
-        setDataSource(responseJson);
-      })
-      .catch(error => {
-        Alert.alert(
-          'Server error',
-          'An unexpected error has occured, unable to fetch cities..',
-          [
-            {
-              text: 'OK',
-              onPress: () => navigation.navigate('Intro'),
-            },
-          ],
-        );
-      });
+    dispatch(fetchCities());
   }, []);
 
   const pickerHandler = (item, key) => {
@@ -162,7 +126,7 @@ const SignUpPage = props => {
             selectedValue={pickerValue}
             style={styles.cityDropDown}
             onValueChange={pickerHandler}>
-            {datasource.map((item, key) => (
+            {cityList.cities.map((item, key) => (
               <Picker.Item label={item.name} value={item.id} key={key} />
             ))}
           </Picker>
